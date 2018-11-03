@@ -1,0 +1,26 @@
+nav{
+  .nav-wrapper{
+    .brand-logo{
+      margin-left: 10px;
+      i{
+        font-size: 30px;
+        line-height: 60px;
+      }
+    }
+  }
+}
+
+.row{
+  .m4{
+    margin-bottom: 80px;
+    .icon-block{
+      position: relative;
+      .btn{
+        margin: 0 auto;
+        margin-top: 20px;
+        position: absolute;
+        left: 35%;
+      }
+    }
+  }
+}
