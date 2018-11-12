@@ -1,0 +1,4 @@
+__pycache__/
+dataset/
+*.pyc
+/db.sqlite3
