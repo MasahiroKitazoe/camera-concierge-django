@@ -1,4 +1,7 @@
 __pycache__/
 dataset/
 *.pyc
-/db.sqlite3
+
+*.sqlite3
+migrations/
+db.sqlite3
