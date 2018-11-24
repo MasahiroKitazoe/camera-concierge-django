@@ -1,1 +1,1 @@
-web: gunicorn cam-ranks.wsgi --log-file -
+web: gunicorn cam_ranks.wsgi --log-file -
