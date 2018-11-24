@@ -1,35 +1,27 @@
 {% extends 'search/base.html' %}
 
+{% load static %}
+
 {% block content %}
   <div class="col s12 m7">
     <h2 class="header"><i class="fas fa-crown"></i> ランキングからカメラを探す <i class="fas fa-crown"></i></h2><br>
-    <div class="card horizontal">
-      <div class="card-image">
-        <img src="/media/tiger.JPG" style="width: 300px; height: auto;">
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <h2 class="ranking-title"><b>初心者にオススメのミラーレスカメラTOP10</b></h2>
-          <p>I am a very simple card. I am good at containing small bits of information.</p>
+    {% for rank in ranks %}
+      <div class="card horizontal">
+        <div class="card-image">
+          <img src="{% static 'ranking/images/tiger.JPG' %}" style="width: 300px; height: auto;">
         </div>
-        <div class="card-action">
-          <a href="#">このランキングを見る</a>
-        </div>
-      </div>
-    </div>
-    <div class="card horizontal">
-      <div class="card-image">
-        <img src="/media/tiger.JPG" style="width: 300px; height: auto;">
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <h2 class="ranking-title"><b>初心者にオススメのミラーレスカメラTOP10</b></h2>
-          <p>I am a very simple card. I am good at containing small bits of information.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">このランキングを見る</a>
+        <div class="card-stacked">
+          <div class="card-content">
+            <a href="{% url 'ranking:detail' rank.id %}" class="title-link" style="text-decoration: none; color: inherit;">
+              <h2 class="ranking-title"><b>{{ rank.title }}</b></h2>
+            </a>
+            <p>{{ rank.description }}</p>
+          </div>
+          <div class="card-action">
+            <a href="{% url 'ranking:detail' rank.id %}">このランキングを見る</a>
+          </div>
         </div>
       </div>
-    </div>
+    {% endfor %}
   </div>
 {% endblock %}
