@@ -4,6 +4,7 @@ from search.models import Frame
 from search.models import Finder
 from search.models import Maker
 from search.models import CameraType
+from ranking.data_import import import_csv_into_model
 
 
 class Rank(models.Model):
@@ -68,3 +69,9 @@ class Rank(models.Model):
     oldest_open_month = models.IntegerField()
     newest_open_month = models.IntegerField()
     camera_type_id = models.IntegerField()
+    target_keyword = models.CharField(max_length=255, null=True)
+
+    @classmethod
+    def import_csv(cls):
+      file_path = "dataset/ranking.csv"
+      import_csv_into_model(file_path, Rank)

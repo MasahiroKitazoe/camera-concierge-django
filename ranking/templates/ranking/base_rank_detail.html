@@ -1,0 +1,76 @@
+{% load static %}
+
+<html>
+  <head>
+      <title>Camera Concierge</title>
+
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="robots" content="index">
+      <meta property="og:type" content="article">
+      <meta property="og:site_name" content="カメラコンシェルジュ">
+      <meta property="og:title" content="{{ rank.title }}">
+      <meta property="og:description" content="{{ rank.description }}">
+      <meta property="og:image" content="{{ og_image }}">
+      <meta property="og:url" content="">
+      <meta property="article:published_time" content="">
+      <meta property="article:modified_time" content="">
+
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+      <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      <link rel="stylesheet" type="text/css" href="{% static 'search/materialize.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'search/top_page.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'ranking/style.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'ranking/detail.css' %}">
+  </head>
+  <body>
+
+    <nav>
+      <div class="nav-wrapper orange">
+        <a href="/" class="brand-logo"><i class="fa fa-home"></i></a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger" style="margin-left: 2px;"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="/ranking">ランキングから探す</a></li>
+          <li><a href="/search">カメラを自分で検索</a></li>
+          <li><a href="#">コンシェルジュに見つけてもらう</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+      <li><a href="/ranking">ランキングから探す</a></li>
+      <li><a href="/search">カメラを検索</a></li>
+      <li><a href="#">コンシェルジュに見つけてもらう</a></li>
+    </ul>
+
+    <div class="wrap">
+      <div id="main" class="col-md-8" role="main" itemscope="itemscope" itemtype="http://schema.org/Blog">
+        <div class="main-inner">
+
+          <header class="detail-header">
+            <h1>{{ rank.title }}</h1>
+          </header>
+
+          <div id="toc_container" class="no_bullets">
+            <p class="toc_title">目次</p>
+            <ul class="toc_list">
+              <li><a href="#i1">1. 記事トップ</a></li>
+              <li><a href="#i2">2. htmlタグでページ内リンクを作成する方法</a></li>
+              <li><a href="#i3">3. 目次(ページ内リンク)の使用例</a></li>
+            </ul>
+          </div>
+
+          <section class="detail-content" itemprop="text">
+            {% block content %}
+            {% endblock %}
+          </section>
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

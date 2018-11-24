@@ -1,6 +1,6 @@
 .header{
   text-align: center;
-  font-size: 4vw
+  font-size: 3vw
 }
 
 .card .horizontal{
@@ -13,5 +13,9 @@
 }
 
 .card-stacked .card-content .ranking-title{
-  font-size: 4vw;
+  font-size: 2vw;
+}
+
+.title-link{
+  text-decoration: none;
 }
