@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'zojv0j0siqisf$*$sa$q$=psm%o@!%bw^0z8+$2vgfqklzilrr'
 
-ALLOWED_HOSTS = ("https://camera-concierge-django.herokuapp.com",)
+ALLOWED_HOSTS = ("camera-concierge-django.herokuapp.com",)
 
 
 # Application definition
