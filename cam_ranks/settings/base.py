@@ -21,14 +21,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'zojv0j0siqisf$*$sa$q$=psm%o@!%bw^0z8+$2vgfqklzilrr'
 
-ALLOWED_HOSTS = ("camera-concierge-django.herokuapp.com",)
+ALLOWED_HOSTS = ["camera-concierge-django.herokuapp.com",
+                 "127.0.0.1"
+                ]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'ranking.apps.RankingConfig',
-    'search.apps.SearchConfig',
+    'camera.apps.CameraConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +57,9 @@ ROOT_URLCONF = 'cam_ranks.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, "templates"),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -1,9 +1,9 @@
 from django.db import models
 
-from search.models import Frame
-from search.models import Finder
-from search.models import Maker
-from search.models import CameraType
+from camera.models import Frame
+from camera.models import Finder
+from camera.models import Maker
+from camera.models import CameraType
 from ranking.data_import import import_csv_into_model
 
 
