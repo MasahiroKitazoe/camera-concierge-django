@@ -21,7 +21,7 @@ class CameraSearcher:
       results = []
 
       for cam_id, camera_specs in cameras.items():
-          match_flag = True  # 検索結果を表すフラグ。
+          match_flag = True  # 検索結果を表すフラグ
 
           # スペック条件を一つずつフィルタしていく
           for spec, val in camera_specs.items():
@@ -57,5 +57,42 @@ class CameraSearcher:
           # match_flagがTrueのままだったら、resultsに加える
           results.append(camera)
 
-  def filter_cameras_by_users(self, criteria_dict):
-    pass
+  @classmethod
+  def filter(self, criteria_dict):
+    """
+    引数criteria_dictに格納されたcameraの検索条件を元に、
+    該当のcameraを抜き出して配列で返す
+    """
+    cameras = Camera.map_cameras()
+
+    results = []
+
+    for cam_id, camera_specs in cameras.items():
+      match_flag = True  # 検索結果を表すフラグ
+
+      for spec, val in camera_specs.items():
+        min_key = "min_" + spec
+        min_key = "max_" + spec
+
+        min_value = criteria_dict.get(min_key, None)
+        max_value = criteria_dict.get(max_key, None)
+
+        # min, maxで絞る条件ではない場合
+        if min_value is None and max_value is None:
+          if val != criteria_dict[spec]:
+            match_flag = False
+            break
+        else:  # min, maxで絞る条件の場合
+          # 値が入っていて、かつ条件に合わない場合は、フラグをFalseにする
+          if min_value is not None and not min_value <= val:
+            match_flag = False
+            break
+
+          if max_value is not None and not val <= max_value:
+            match_flag = False
+            break
+
+      if match_flag == False:
+        continue
+
+      results.append(camera_specs)
