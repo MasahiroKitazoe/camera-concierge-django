@@ -94,7 +94,7 @@ class Camera(models.Model):
     shutter_speed = models.CharField(max_length=50)
     monitor_size = models.FloatField()
     monitor_pixel = models.FloatField()
-    max_num_of_shooting = models.IntegerField()
+    shooting_num = models.IntegerField()
     four_k = models.BooleanField()
     wifi = models.BooleanField()
     touch_panel = models.BooleanField()
@@ -107,7 +107,7 @@ class Camera(models.Model):
     maker = models.ForeignKey("Maker", on_delete=models.PROTECT)
     finder = models.ForeignKey("Finder", on_delete=models.PROTECT)
     f_value = models.FloatField()
-    max_num_of_shooting_with_finder = models.IntegerField()
+    shooting_num_with_finder = models.IntegerField()
     bluetooth = models.CharField(max_length=20)
     zoom = models.FloatField()
     min_focus = models.IntegerField()
@@ -150,7 +150,7 @@ class Camera(models.Model):
         camera.shutter_speed = camera.assign_item(row[7])
         camera.monitor_size = camera.assign_item(row[8])
         camera.monitor_pixel = camera.assign_item(row[9])
-        camera.max_num_of_shooting = camera.assign_item(row[10])
+        camera.shooting_num = camera.assign_item(row[10])
         camera.four_k = camera.assign_item(row[11])
         camera.wifi = camera.assign_item(row[12])
         camera.touch_panel = camera.assign_item(row[13])
@@ -163,7 +163,7 @@ class Camera(models.Model):
         camera.maker_id = camera.assign_item(row[20])
         camera.finder_id = camera.assign_item(row[21])
         camera.f_value = camera.assign_item(row[22])
-        camera.max_num_of_shooting_with_finder = camera.assign_item(row[23])
+        camera.shooting_num_with_finder = camera.assign_item(row[23])
         camera.bluetooth = camera.assign_item(row[24])
         camera.zoom = camera.assign_item(row[25])
         camera.min_focus = camera.assign_item(row[26])
@@ -188,3 +188,51 @@ class Camera(models.Model):
       cameras = Camera.objects.all()
       for camera in cameras:
         camera.delete()
+
+    @classmethod
+    def map_cameras(cls):
+        cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type")
+        results = {}
+        for camera in cameras:
+            results[camera.id] = {
+                "name": camera.name,
+                "price": camera.price,
+                "pixel": camera.pixel,
+                "min_iso": camera.min_iso,
+                "max_iso": camera.max_iso,
+                "continuous_shooting_performance": camera.continuous_shooting_performance,
+                "shutter_speed": camera.shutter_speed,
+                "monitor_size": camera.monitor_size,
+                "monitor_pixel": camera.monitor_pixel,
+                "shooting_num": camera.shooting_num,
+                "four_k": camera.four_k,
+                "wifi": camera.wifi,
+                "touch_panel": camera.touch_panel,
+                "move_panel": camera.move_panel,
+                "weight": camera.weight,
+                "width": camera.width,
+                "height": camera.height,
+                "depth": camera.depth,
+                "frame_id": camera.frame.id,
+                "maker_id": camera.maker.id,
+                "finder_id": camera.finder.id,
+                "f_value": camera.f_value,
+                "shooting_num_with_finder": camera.shooting_num_with_finder,
+                "bluetooth": camera.bluetooth,
+                "zoom": camera.zoom,
+                "min_focus": camera.min_focus,
+                "max_focus": camera.max_focus,
+                "selfie": camera.selfie,
+                "waterploof": camera.waterploof,
+                "gps": camera.gps,
+                "nearest_shot": camera.nearest_shot,
+                "anti_shake": camera.anti_shake,
+                "five_axis_anti_shake": camera.five_axis_anti_shake,
+                "nearest_shot_with_macro_mode": camera.nearest_shot_with_macro_mode,
+                "f_value_wide": camera.f_value_wide,
+                "super_wide": camera.super_wide,
+                "open_year": camera.open_year,
+                "open_month": camera.open_month,
+                "camera_type_id": camera.camera_type.id
+            }
+        return results
