@@ -4,7 +4,6 @@ from django.db import models
 
 import pandas as pd
 import math
-import numpy as np
 
 
 class CameraType(models.Model):
@@ -27,13 +26,13 @@ class Finder(models.Model):
 
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/finders.csv"
+        file_path = "dataset/finders.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        finder = Finder()
-        finder.finder_type = row[1]
-        finder.save()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            finder = Finder()
+            finder.finder_type = row[1]
+            finder.save()
 
 
 class Frame(models.Model):
@@ -70,18 +69,19 @@ class Review(models.Model):
     url = models.CharField(max_length=255)
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
 
+    # TODO: Reviewのimport失敗してる
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/reviews.csv"
+        file_path = "dataset/reviews.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        review = Review()
-        review.title = row[1]
-        review.body = row[2]
-        review.url = row[3]
-        review.camera_id = row[4]
-        review.save()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            review = Review()
+            review.title = row[1]
+            review.body = row[2]
+            review.url = row[3]
+            review.camera_id = row[4]
+            review.save()
 
 
 class Camera(models.Model):
