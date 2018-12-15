@@ -6,3 +6,7 @@
 .form-group form{
   text-align: left;
 }
+
+.form-fields{
+  display: block;
+}

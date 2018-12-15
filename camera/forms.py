@@ -65,26 +65,20 @@ class SearchForm(ModelForm):
         self.fields["name"].required = False
         self.fields["min_iso"].required = False
         self.fields["max_iso"].required = False
-        self.fields["four_k"].required = False
-        self.fields["wifi"].required = False
-        self.fields["touch_panel"].required = False
-        self.fields["move_panel"].required = False
         self.fields["frame"].required = False
         self.fields["maker"].required = False
         self.fields["finder"].required = False
         self.fields["bluetooth"].required = False
         self.fields["min_focus"].required = False
         self.fields["max_focus"].required = False
-        self.fields["selfie"].required = False
-        self.fields["waterploof"].required = False
-        self.fields["gps"].required = False
         self.fields["nearest_shot"].required = False
         self.fields["anti_shake"].required = False
         self.fields["five_axis_anti_shake"].required = False
         self.fields["nearest_shot_with_macro_mode"].required = False
         self.fields["f_value_wide"].required = False
-        self.fields["super_wide"].required = False
         self.fields["camera_type"].required = False
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-fields'
 
     class Meta:
         model = Camera

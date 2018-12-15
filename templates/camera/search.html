@@ -22,7 +22,7 @@
 {% endif %}
 <div class="form-group">
   <form action="{% url "camera:search" %}" method="get">
-    <ul class="collapsible">
+    <ul class="collapsible" style="z-index: -1;">
       <li>
         <div class="collapsible-header">
           <i class="fas fa-angle-down"></i>
@@ -121,15 +121,18 @@
             <p class="collapsible-label">シャッタースピード</p>
         </div>
         <div class="collapsible-body">
-          {{ form.min_shutter_speed.label_tag }}
-          {{ form.min_shutter_speed }}
-          {{ form.min_shutter_speed.help_text }}
-          {{ form.min_shutter_speed.errors }}
-
-          {{ form.max_shutter_speed.label_tag }}
-          {{ form.max_shutter_speed }}
-          {{ form.max_shutter_speed.help_text }}
-          {{ form.max_shutter_speed.errors }}
+            <div>
+              {{ form.min_shutter_speed.label_tag }}
+              {{ form.min_shutter_speed }}
+              {{ form.min_shutter_speed.help_text }}
+              {{ form.min_shutter_speed.errors }}
+            </div>
+            <div>
+              {{ form.max_shutter_speed.label_tag }}
+              {{ form.max_shutter_speed }}
+              {{ form.max_shutter_speed.help_text }}
+              {{ form.max_shutter_speed.errors }}
+            </div>
         </div>
       </li>
       <li>
