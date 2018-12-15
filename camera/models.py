@@ -9,20 +9,26 @@ import math
 class CameraType(models.Model):
     cam_type = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.cam_type
+
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/camera_types.csv"
+        file_path = "dataset/camera_types.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        c_type = CameraType()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            c_type = CameraType()
 
-        c_type.cam_type = row[1]
-        c_type.save()
+            c_type.cam_type = row[1]
+            c_type.save()
 
 
 class Finder(models.Model):
     finder_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.finder_type
 
     @classmethod
     def import_csv(cls):
@@ -38,29 +44,35 @@ class Finder(models.Model):
 class Frame(models.Model):
     frame_type = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.frame_type
+
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/frames.csv"
+        file_path = "dataset/frames.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        frame = Frame()
-        frame.frame_type = row[1]
-        frame.save()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            frame = Frame()
+            frame.frame_type = row[1]
+            frame.save()
 
 
 class Maker(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/makers.csv"
+        file_path = "dataset/makers.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        maker = Maker()
-        maker.name = row[1]
-        maker.save()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            maker = Maker()
+            maker.name = row[1]
+            maker.save()
 
 
 class Review(models.Model):
@@ -185,9 +197,9 @@ class Camera(models.Model):
 
     @classmethod
     def delete_all_records(cls):
-      cameras = Camera.objects.all()
-      for camera in cameras:
-        camera.delete()
+        cameras = Camera.objects.all()
+        for camera in cameras:
+            camera.delete()
 
     @classmethod
     def map_cameras(cls):

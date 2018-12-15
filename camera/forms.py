@@ -106,4 +106,5 @@ class SearchForm(ModelForm):
         "min_focus": "最短焦点距離",
         "max_focus": "最長焦点距離",
         "camera_type": "カメラタイプ",
+        "nearest_shot": "最短撮影距離"
         }
