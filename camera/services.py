@@ -86,7 +86,7 @@ class CameraSearcher:
 
                 # min, maxで絞る条件でない場合（cameraのbooleanの属性値を想定）
                 criteria_val = criteria_dict.get(spec, None)
-                if criteria_val is not None and len(criteria_val) != 0:
+                if criteria_val is not None and len(criteria_val) != 0:  # もうちょっとなんとかならんか
                     if val != criteria_dict.get(spec):
                         match_flag = False
                         break
