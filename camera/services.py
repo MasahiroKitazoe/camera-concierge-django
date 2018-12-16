@@ -78,6 +78,16 @@ class CameraSearcher:
                         break
                     continue  # 一致していたら、次の検索条件へ
 
+                # フィールド名にmin, maxが入っているfocus(焦点距離)については先に処理する
+                if "focus" in spec and criteria_dict.get(spec, None) is not None:
+                    if spec == "min_focus" and criteria_dict[spec] > val:
+                        match_flag = False
+                        break
+                    if spec == "max_focus" and criteria_dict[spec] < val:
+                        match_flag = False
+                        break
+                    continue  # 一致していたら、次の検索条件へ
+
                 min_key = "min_" + spec
                 max_key = "max_" + spec
 

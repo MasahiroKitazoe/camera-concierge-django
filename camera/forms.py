@@ -46,8 +46,6 @@ class SearchForm(ModelForm):
       forms.FloatField(label="マクロモード時最短撮影距離(下限)", required=False)
     max_nearest_shot_with_macro_mode = \
       forms.FloatField(label="マクロモード時最短撮影距離(上限)", required=False)
-    min_f_value_wide = forms.ChoiceField(label="ワイド端F値(下限)", required=False, choices=F_VALUE)
-    max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
     min_open_date = forms.DateTimeField(label="発売日(下限)", required=False)
     max_open_date = forms.DateTimeField(label="発売日(上限)", required=False)
     four_k = forms.ChoiceField(label="4K動画撮影", required=False, choices=BOOLEAN)
