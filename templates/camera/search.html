@@ -341,23 +341,6 @@
       <li>
         <div class="collapsible-header">
           <i class="fas fa-angle-down"></i>
-            <p class="collapsible-label">F値</p>
-        </div>
-        <div class="collapsible-body">
-          {{ form.min_f_value.label_tag }}
-          {{ form.min_f_value }}
-          {{ form.min_f_value.help_text }}
-          {{ form.min_f_value.errors }}
-
-          {{ form.max_f_value.label_tag }}
-          {{ form.max_f_value }}
-          {{ form.max_f_value.help_text }}
-          {{ form.max_f_value.errors }}
-        </div>
-      </li>
-      <li>
-        <div class="collapsible-header">
-          <i class="fas fa-angle-down"></i>
             <p class="collapsible-label">ワイド端F値</p>
         </div>
         <div class="collapsible-body">
@@ -370,6 +353,23 @@
           {{ form.max_f_value_wide }}
           {{ form.max_f_value_wide.help_text }}
           {{ form.max_f_value_wide.errors }}
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="fas fa-angle-down"></i>
+            <p class="collapsible-label">テレ端F値</p>
+        </div>
+        <div class="collapsible-body">
+          {{ form.min_f_value_tele.label_tag }}
+          {{ form.min_f_value_tele }}
+          {{ form.min_f_value_tele.help_text }}
+          {{ form.min_f_value_tele.errors }}
+
+          {{ form.max_f_value_tele.label_tag }}
+          {{ form.max_f_value_tele }}
+          {{ form.max_f_value_tele.help_text }}
+          {{ form.max_f_value_tele.errors }}
         </div>
       </li>
       <li>

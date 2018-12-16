@@ -30,8 +30,10 @@ class SearchForm(ModelForm):
     max_height = forms.FloatField(label="高さ(上限)", required=False)
     min_depth = forms.FloatField(label="奥行(下限)", required=False)
     max_depth = forms.FloatField(label="奥行(上限)", required=False)
-    min_f_value = forms.ChoiceField(label="F値(下限)", required=False, choices=F_VALUE)
-    max_f_value = forms.ChoiceField(label="F値(上限)", required=False, choices=F_VALUE)
+    min_f_value_wide = forms.ChoiceField(label="ワイド端F値(下限)", required=False, choices=F_VALUE)
+    max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
+    min_f_value_tele = forms.ChoiceField(label="テレ端F値(下限)", required=False, choices=F_VALUE)
+    max_f_value_tele = forms.ChoiceField(label="テレ端F値(上限)", required=False, choices=F_VALUE)
     min_shootin_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(下限)", required=False)
     max_shootin_num_with_finder = \
@@ -75,7 +77,6 @@ class SearchForm(ModelForm):
         self.fields["anti_shake"].required = False
         self.fields["five_axis_anti_shake"].required = False
         self.fields["nearest_shot_with_macro_mode"].required = False
-        self.fields["f_value_wide"].required = False
         self.fields["camera_type"].required = False
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-fields'

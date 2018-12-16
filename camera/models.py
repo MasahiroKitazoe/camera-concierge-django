@@ -118,7 +118,8 @@ class Camera(models.Model):
     frame = models.ForeignKey("Frame", on_delete=models.PROTECT)
     maker = models.ForeignKey("Maker", on_delete=models.PROTECT)
     finder = models.ForeignKey("Finder", on_delete=models.PROTECT)
-    f_value = models.FloatField()
+    f_value_wide = models.FloatField()
+    f_value_tele = models.FloatField()
     shooting_num_with_finder = models.IntegerField()
     bluetooth = models.CharField(max_length=20)
     zoom = models.FloatField()
@@ -131,7 +132,6 @@ class Camera(models.Model):
     anti_shake = models.CharField(max_length=50)
     five_axis_anti_shake = models.BooleanField()
     nearest_shot_with_macro_mode = models.FloatField()
-    f_value_wide = models.FloatField()
     super_wide = models.BooleanField()
     open_year = models.IntegerField()
     open_month = models.IntegerField()
@@ -174,7 +174,7 @@ class Camera(models.Model):
         camera.frame_id = camera.assign_item(row[19])
         camera.maker_id = camera.assign_item(row[20])
         camera.finder_id = camera.assign_item(row[21])
-        camera.f_value = camera.assign_item(row[22])
+        camera.f_value_wide = camera.assign_item(row[22])
         camera.shooting_num_with_finder = camera.assign_item(row[23])
         camera.bluetooth = camera.assign_item(row[24])
         camera.zoom = camera.assign_item(row[25])
@@ -187,7 +187,7 @@ class Camera(models.Model):
         camera.anti_shake = camera.assign_item(row[32])
         camera.five_axis_anti_shake = camera.assign_item(row[33])
         camera.nearest_shot_with_macro_mode = camera.assign_item(row[34])
-        camera.f_value_wide = camera.assign_item(row[35])
+        camera.f_value_tele = camera.assign_item(row[35])
         camera.super_wide = camera.assign_item(row[36])
         camera.open_year = camera.assign_item(row[37])
         camera.open_month = camera.assign_item(row[38])
@@ -228,7 +228,7 @@ class Camera(models.Model):
                 "frame_id": camera.frame.id,
                 "maker_id": camera.maker.id,
                 "finder_id": camera.finder.id,
-                "f_value": camera.f_value,
+                "f_value_wide": camera.f_value_wide,
                 "shooting_num_with_finder": camera.shooting_num_with_finder,
                 "bluetooth": camera.bluetooth,
                 "zoom": camera.zoom,
@@ -241,7 +241,7 @@ class Camera(models.Model):
                 "anti_shake": camera.anti_shake,
                 "five_axis_anti_shake": camera.five_axis_anti_shake,
                 "nearest_shot_with_macro_mode": camera.nearest_shot_with_macro_mode,
-                "f_value_wide": camera.f_value_wide,
+                "f_value_tele": camera.f_value_tele,
                 "super_wide": camera.super_wide,
                 "open_year": camera.open_year,
                 "open_month": camera.open_month,
