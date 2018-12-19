@@ -8,20 +8,28 @@ class CameraTypeFactory(DjangoModelFactory):
     class Meta:
         model = CameraType
 
+    cam_type = "ミラーレス一眼"
+
 
 class FinderFactory(DjangoModelFactory):
     class Meta:
         model = Finder
+
+    finder_type = "電子式ビューファインダー"
 
 
 class FrameFactory(DjangoModelFactory):
     class Meta:
         model = Frame
 
+    frame_type = "フルサイズ"
+
 
 class MakerFactory(DjangoModelFactory):
     class Meta:
         model = Maker
+
+    name = "ソニー"
 
 
 class CameraFactory(DjangoModelFactory):
@@ -41,7 +49,7 @@ class CameraFactory(DjangoModelFactory):
     four_k = False
     wifi = True
     touch_panel = False
-    move_panel = True
+    move_panel = "チルト式"
     weight = 285
     width = 120.0
     height = 66.9
@@ -49,9 +57,10 @@ class CameraFactory(DjangoModelFactory):
     frame = factory.SubFactory(FrameFactory)
     maker = factory.SubFactory(MakerFactory)
     finder = factory.SubFactory(FinderFactory)
-    f_value = 1.8
+    f_value_wide = 1.8
+    f_value_tele = 4
     shooting_num_with_finder = 310
-    bluetooth = ""
+    bluetooth = "○"
     zoom = 2.9
     min_focus = 24
     max_focus = 70
@@ -62,7 +71,6 @@ class CameraFactory(DjangoModelFactory):
     anti_shake = "電子式"
     five_axis_anti_shake = False
     nearest_shot_with_macro_mode = 0
-    f_value_tele = 2.8
     super_wide = False
     open_year = 2014
     open_month = 5

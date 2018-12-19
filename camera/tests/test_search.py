@@ -1,6 +1,7 @@
 import pytest
+from dateutil.parser import *
 
-from .factories import CameraFactory
+from .factories import CameraFactory, CameraTypeFactory, FinderFactory, FrameFactory, MakerFactory
 from ..services import CameraSearcher
 
 
@@ -11,15 +12,14 @@ class SetUpCriteria:
             'name': criteria.get("name"),
             'min_iso': criteria.get("min_iso"),
             'max_iso': criteria.get("max_iso"),
-            'frame': criteria.get("frame"),
-            'maker': criteria.get("maker"),
-            'finder': criteria.get("finder"),
+            'camera_type_id': criteria.get("camera_type_id"),
+            'finder_id': criteria.get("finder_id"),
+            'frame_id': criteria.get("frame_id"),
+            'maker_id': criteria.get("maker_id"),
             'min_focus': criteria.get("min_focus"),
             'max_focus': criteria.get("max_focus"),
             'nearest_shot': criteria.get("nearest_shot"),
             'nearest_shot_with_macro_mode': criteria.get("nearest_shot_with_macro_mode"),
-            'f_value_wide_wide_tele': criteria.get("f_value_wide_wide_tele"),
-            'camera_type': criteria.get("camera_type"),
             'min_price': criteria.get("min_price"),
             'max_price': criteria.get("max_price"),
             'min_pixel': criteria.get("min_pixel"),
@@ -52,8 +52,8 @@ class SetUpCriteria:
             'max_nearest_shot': criteria.get("max_nearest_shot"),
             'min_nearest_shot_with_macro_mode': criteria.get("min_nearest_shot_with_macro_mode"),
             'max_nearest_shot_with_macro_mode': criteria.get("max_nearest_shot_with_macro_mode"),
-            'min_f_value_wide_tele': criteria.get("min_f_value_wide_tele", ""),
-            'max_f_value_wide_tele': criteria.get("max_f_value_wide_tele", ""),
+            'min_f_value_tele': criteria.get("min_f_value_tele", ""),
+            'max_f_value_tele': criteria.get("max_f_value_tele", ""),
             'min_open_date': criteria.get("min_open_date"),
             'max_open_date': criteria.get("max_open_date"),
             'four_k': criteria.get("four_k", ""),
@@ -384,11 +384,11 @@ class TestCameraSearcher:
         actual = CameraSearcher().filter(criteria)
 
         assert len(actual) == 2
-        assert actual[0]["f_value"] == 2
-        assert actual[1]["f_value"] == 2.8
+        assert actual[0]["f_value_wide"] == 2
+        assert actual[1]["f_value_wide"] == 2.8
 
     def test_filter_by_max_f_value_wide(self):
-        """最低ワイド端F値での絞り込みができているか"""
+        """最高ワイド端F値での絞り込みができているか"""
         CameraFactory.create(f_value_wide=4)
         CameraFactory.create(f_value_wide=5.6)
         CameraFactory.create(f_value_wide=8)
@@ -398,103 +398,521 @@ class TestCameraSearcher:
         actual = CameraSearcher().filter(criteria)
 
         assert len(actual) == 2
-        assert actual[0]["f_value"] == 4
-        assert actual[1]["f_value"] == 5.6
+        assert actual[0]["f_value_wide"] == 4
+        assert actual[1]["f_value_wide"] == 5.6
 
     def test_filter_by_min_shooting_num_with_finder(self):
         """最低ファインダー使用時撮影可能枚数での絞り込みができているか"""
-        CameraFactory.create(shooting_num_with_finder=1.4)
-        CameraFactory.create(shooting_num_with_finder=2.0)
-        CameraFactory.create(shooting_num_with_finder=2.8)
+        CameraFactory.create(shooting_num_with_finder=299)
+        CameraFactory.create(shooting_num_with_finder=300)
+        CameraFactory.create(shooting_num_with_finder=301)
 
-        criteria = SetUpCriteria.create({"min_shooting_num_with_finder": 2})
+        criteria = SetUpCriteria.create({"min_shooting_num_with_finder": 300})
 
         actual = CameraSearcher().filter(criteria)
 
         assert len(actual) == 2
-        assert actual[0]["shooting_num_with_finder"] == 2
-        assert actual[1]["shooting_num_with_finder"] == 2.8
+        assert actual[0]["shooting_num_with_finder"] == 300
+        assert actual[1]["shooting_num_with_finder"] == 301
 
     def test_filter_by_max_shooting_num_with_finder(self):
-        pass
+        """最高ファインダー使用時撮影可能枚数での絞り込みができているか"""
+        CameraFactory.create(shooting_num_with_finder=299)
+        CameraFactory.create(shooting_num_with_finder=300)
+        CameraFactory.create(shooting_num_with_finder=301)
+
+        criteria = SetUpCriteria.create({"max_shooting_num_with_finder": 300})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["shooting_num_with_finder"] == 299
+        assert actual[1]["shooting_num_with_finder"] == 300
 
     def test_filter_by_min_focus(self):
-        pass
+        """最低焦点距離での絞り込みができているか"""
+        CameraFactory.create(min_focus=19)
+        CameraFactory.create(min_focus=20)
+        CameraFactory.create(min_focus=21)
+
+        criteria = SetUpCriteria.create({"min_focus": 20})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["min_focus"] == 20
+        assert actual[1]["min_focus"] == 21
 
     def test_filter_by_max_focus(self):
-        pass
+        """最高焦点距離での絞り込みができているか"""
+        CameraFactory.create(max_focus=19)
+        CameraFactory.create(max_focus=20)
+        CameraFactory.create(max_focus=21)
+
+        criteria = SetUpCriteria.create({"max_focus": 20})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["max_focus"] == 19
+        assert actual[1]["max_focus"] == 20
 
     def test_filter_by_min_zoom(self):
-        pass
+        """最低ズーム倍率での絞り込みができているか"""
+        CameraFactory.create(zoom=4.9)
+        CameraFactory.create(zoom=5)
+        CameraFactory.create(zoom=5.1)
+
+        criteria = SetUpCriteria.create({"min_zoom": 5})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["zoom"] == 5
+        assert actual[1]["zoom"] == 5.1
 
     def test_filter_by_max_zoom(self):
-        pass
+        """最高ズーム倍率での絞り込みができているか"""
+        CameraFactory.create(zoom=4.9)
+        CameraFactory.create(zoom=5)
+        CameraFactory.create(zoom=5.1)
+
+        criteria = SetUpCriteria.create({"max_zoom": 5})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["zoom"] == 4.9
+        assert actual[1]["zoom"] == 5
 
     def test_filter_by_min_nearest_shot(self):
-        pass
+        """最低最短撮影距離での絞り込みができているか"""
+        CameraFactory.create(nearest_shot=9)
+        CameraFactory.create(nearest_shot=10)
+        CameraFactory.create(nearest_shot=11)
+
+        criteria = SetUpCriteria.create({"min_nearest_shot": 10})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["nearest_shot"] == 10
+        assert actual[1]["nearest_shot"] == 11
 
     def test_filter_by_max_nearest_shot(self):
-        pass
+        """最高最短撮影距離での絞り込みができているか"""
+        CameraFactory.create(nearest_shot=9)
+        CameraFactory.create(nearest_shot=10)
+        CameraFactory.create(nearest_shot=11)
+
+        criteria = SetUpCriteria.create({"max_nearest_shot": 10})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["nearest_shot"] == 9
+        assert actual[1]["nearest_shot"] == 10
 
     def test_filter_by_min_nearest_shot_with_macro_mode(self):
-        pass
+        """最低マクロモード時最短撮影距離での絞り込みができているか"""
+        CameraFactory.create(nearest_shot_with_macro_mode=9)
+        CameraFactory.create(nearest_shot_with_macro_mode=10)
+        CameraFactory.create(nearest_shot_with_macro_mode=11)
+
+        criteria = SetUpCriteria.create({"min_nearest_shot_with_macro_mode": 10})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["nearest_shot_with_macro_mode"] == 10
+        assert actual[1]["nearest_shot_with_macro_mode"] == 11
 
     def test_filter_by_max_nearest_shot_with_macro_mode(self):
-        pass
+        """最高マクロモード時最短撮影距離での絞り込みができているか"""
+        CameraFactory.create(nearest_shot_with_macro_mode=9)
+        CameraFactory.create(nearest_shot_with_macro_mode=10)
+        CameraFactory.create(nearest_shot_with_macro_mode=11)
+
+        criteria = SetUpCriteria.create({"max_nearest_shot_with_macro_mode": 10})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["nearest_shot_with_macro_mode"] == 9
+        assert actual[1]["nearest_shot_with_macro_mode"] == 10
 
     def test_filter_by_min_f_value_tele(self):
-        pass
+        """最低テレ端F値での絞り込みができているか"""
+        CameraFactory.create(f_value_tele=1.4)
+        CameraFactory.create(f_value_tele=2.0)
+        CameraFactory.create(f_value_tele=2.8)
+
+        criteria = SetUpCriteria.create({"min_f_value_tele": 2})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["f_value_tele"] == 2
+        assert actual[1]["f_value_tele"] == 2.8
 
     def test_filter_by_max_f_value_tele(self):
-        pass
+        """最高テレ端F値での絞り込みができているか"""
+        CameraFactory.create(f_value_tele=4)
+        CameraFactory.create(f_value_tele=5.6)
+        CameraFactory.create(f_value_tele=8)
+
+        criteria = SetUpCriteria.create({"max_f_value_tele": 5.6})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["f_value_tele"] == 4
+        assert actual[1]["f_value_tele"] == 5.6
 
     def test_filter_by_min_open_date(self):
-        pass
+        """最古発売日での絞り込みができているか"""
+        CameraFactory.create(open_year=2018, open_month=10)
+        CameraFactory.create(open_year=2018, open_month=11)
+        CameraFactory.create(open_year=2018, open_month=12)
+
+        criteria = SetUpCriteria.create({"min_open_date": parse("2018/11")})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 2
+        assert actual[0]["open_date"].year == 2018
+        assert actual[0]["open_date"].month == 11
+        assert actual[1]["open_date"].year == 2018
+        assert actual[1]["open_date"].month == 12
 
     def test_filter_by_max_open_date(self):
-        pass
+        """最新発売日での絞り込みができているか"""
+        CameraFactory.create(open_year=2018, open_month=10)
+        CameraFactory.create(open_year=2018, open_month=11)
+        CameraFactory.create(open_year=2018, open_month=12)
 
-    def test_filter_by_four_k(self):
-        pass
+        criteria = SetUpCriteria.create({"max_open_date": parse("2018/11")})
 
-    def test_filter_by_wifi(self):
-        pass
+        actual = CameraSearcher().filter(criteria)
 
-    def test_filter_by_touch_panel(self):
-        pass
+        assert len(actual) == 2
+        assert actual[0]["open_date"].year == 2018
+        assert actual[0]["open_date"].month == 10
+        assert actual[1]["open_date"].year == 2018
+        assert actual[1]["open_date"].month == 11
 
-    def test_filter_by_move_panel(self):
-        pass
+    def test_filter_by_four_k_true(self):
+        """4k動画撮影有りで絞り込みができているか"""
+        CameraFactory.create(four_k=True)
+        CameraFactory.create(four_k=False)
 
-    def test_filter_by_bluetooth(self):
-        pass
+        criteria = SetUpCriteria.create({"four_k": True})
 
-    def test_filter_by_selfie(self):
-        pass
+        actual = CameraSearcher().filter(criteria)
 
-    def test_filter_by_waterploof(self):
-        pass
+        assert len(actual) == 1
+        assert actual[0]["four_k"] == True
 
-    def test_filter_by_gps(self):
-        pass
+    def test_filter_by_four_k_false(self):
+        """4k動画撮影無しで絞り込みができているか"""
+        CameraFactory.create(four_k=True)
+        CameraFactory.create(four_k=False)
 
-    def test_filter_by_anti_shake(self):
-        pass
+        criteria = SetUpCriteria.create({"four_k": False})
 
-    def test_filter_by_five_axis_anti_shake(self):
-        pass
+        actual = CameraSearcher().filter(criteria)
 
-    def test_filter_by_super_wide(self):
-        pass
+        assert len(actual) == 1
+        assert actual[0]["four_k"] == False
+
+    def test_filter_by_wifi_true(self):
+        """WiFi機能有りで絞り込みができているか"""
+        CameraFactory.create(wifi=True)
+        CameraFactory.create(wifi=False)
+
+        criteria = SetUpCriteria.create({"wifi": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["wifi"] == True
+
+    def test_filter_by_wifi_false(self):
+        """WiFi機能無しで絞り込みができているか"""
+        CameraFactory.create(wifi=True)
+        CameraFactory.create(wifi=False)
+
+        criteria = SetUpCriteria.create({"wifi": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["wifi"] == False
+
+    def test_filter_by_touch_panel_true(self):
+        """タッチパネル有りで絞り込みができているか"""
+        CameraFactory.create(touch_panel=True)
+        CameraFactory.create(touch_panel=False)
+
+        criteria = SetUpCriteria.create({"touch_panel": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["touch_panel"] == True
+
+    def test_filter_by_touch_panel_false(self):
+        """タッチパネル無しで絞り込みができているか"""
+        CameraFactory.create(touch_panel=True)
+        CameraFactory.create(touch_panel=False)
+
+        criteria = SetUpCriteria.create({"touch_panel": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["touch_panel"] == False
+
+    def test_filter_by_move_panel_true(self):
+        """可動式パネル有りで絞り込みができているか"""
+        CameraFactory.create(move_panel="チルト液晶")
+        CameraFactory.create(move_panel="")
+
+        criteria = SetUpCriteria.create({"move_panel": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["move_panel"] == True
+
+    def test_filter_by_move_panel_false(self):
+        """可動式パネル無しで絞り込みができているか"""
+        CameraFactory.create(move_panel="チルト液晶")
+        CameraFactory.create(move_panel="")
+
+        criteria = SetUpCriteria.create({"move_panel": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["move_panel"] == False
+
+    def test_filter_by_bluetooth_true(self):
+        """Bluetooth有りで絞り込みができているか"""
+        CameraFactory.create(bluetooth="○")
+        CameraFactory.create(bluetooth="")
+
+        criteria = SetUpCriteria.create({"bluetooth": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["bluetooth"] == True
+
+    def test_filter_by_bluetooth_false(self):
+        """Bluetooth無しで絞り込みができているか"""
+        CameraFactory.create(bluetooth="○")
+        CameraFactory.create(bluetooth="")
+
+        criteria = SetUpCriteria.create({"bluetooth": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["bluetooth"] == False
+
+    def test_filter_by_selfie_true(self):
+        """自撮り有りで絞り込みができているか"""
+        CameraFactory.create(selfie=True)
+        CameraFactory.create(selfie=False)
+
+        criteria = SetUpCriteria.create({"selfie": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["selfie"] == True
+
+    def test_filter_by_selfie_false(self):
+        """自撮り無しで絞り込みができているか"""
+        CameraFactory.create(selfie=True)
+        CameraFactory.create(selfie=False)
+
+        criteria = SetUpCriteria.create({"selfie": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["selfie"] == False
+
+    def test_filter_by_waterploof_true(self):
+        """防水有りで絞り込みができているか"""
+        CameraFactory.create(waterploof="10m")
+        CameraFactory.create(waterploof="")
+
+        criteria = SetUpCriteria.create({"waterploof": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["waterploof"] == True
+
+    def test_filter_by_waterploof_false(self):
+        """防水無しで絞り込みができているか"""
+        CameraFactory.create(waterploof="10m")
+        CameraFactory.create(waterploof="")
+
+        criteria = SetUpCriteria.create({"waterploof": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["waterploof"] == False
+
+    def test_filter_by_gps_true(self):
+        """GPS有りで絞り込みができているか"""
+        CameraFactory.create(gps=True)
+        CameraFactory.create(gps=False)
+
+        criteria = SetUpCriteria.create({"gps": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["gps"] == True
+
+    def test_filter_by_gps_false(self):
+        """GPS無しで絞り込みができているか"""
+        CameraFactory.create(gps=True)
+        CameraFactory.create(gps=False)
+
+        criteria = SetUpCriteria.create({"gps": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["gps"] == False
+
+    def test_filter_by_anti_shake_true(self):
+        """手ぶれ補正有りで絞り込みができているか"""
+        CameraFactory.create(anti_shake="5軸手ぶれ補正")
+        CameraFactory.create(anti_shake="")
+
+        criteria = SetUpCriteria.create({"anti_shake": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["anti_shake"] == True
+
+    def test_filter_by_anti_shake_false(self):
+        """手ぶれ補正有りで絞り込みができているか"""
+        CameraFactory.create(anti_shake="5軸手ぶれ補正")
+        CameraFactory.create(anti_shake="")
+
+        criteria = SetUpCriteria.create({"anti_shake": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["anti_shake"] == True
+
+    def test_filter_by_five_axis_anti_shake_true(self):
+        """GPS有りで絞り込みができているか"""
+        CameraFactory.create(five_axis_anti_shake=True)
+        CameraFactory.create(five_axis_anti_shake=False)
+
+        criteria = SetUpCriteria.create({"five_axis_anti_shake": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["five_axis_anti_shake"] == True
+
+    def test_filter_by_five_axis_anti_shake_false(self):
+        """GPS無しで絞り込みができているか"""
+        CameraFactory.create(five_axis_anti_shake=True)
+        CameraFactory.create(five_axis_anti_shake=False)
+
+        criteria = SetUpCriteria.create({"five_axis_anti_shake": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["five_axis_anti_shake"] == False
+
+    def test_filter_by_super_wide_true(self):
+        """超広角有りで絞り込みができているか"""
+        CameraFactory.create(super_wide=True)
+        CameraFactory.create(super_wide=False)
+
+        criteria = SetUpCriteria.create({"super_wide": True})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["super_wide"] == True
+
+    def test_filter_by_super_wide_false(self):
+        """超広角無しで絞り込みができているか"""
+        CameraFactory.create(super_wide=True)
+        CameraFactory.create(super_wide=False)
+
+        criteria = SetUpCriteria.create({"super_wide": False})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["super_wide"] == False
 
     def test_filter_by_camera_type(self):
-        pass
+        cam_type1 = CameraTypeFactory.create(cam_type="一眼レフ")
+        cam_type2 = CameraTypeFactory.create(cam_type="ミラーレス一眼")
+        CameraFactory(camera_type=cam_type1)
+        CameraFactory(camera_type=cam_type2)
+
+        criteria = SetUpCriteria.create({"camera_type_id": cam_type2.id})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["camera_type_id"] == cam_type2.id
 
     def test_filter_by_frame(self):
-        pass
+        frame1 = FrameFactory.create(frame_type="フルサイズ")
+        frame2 = FrameFactory.create(frame_type="APS-C")
+        CameraFactory(frame=frame1)
+        CameraFactory(frame=frame2)
+
+        criteria = SetUpCriteria.create({"frame_id": frame2.id})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["frame_id"] == frame2.id
 
     def test_filter_by_finder(self):
-        pass
+        finder1 = FinderFactory.create(finder_type="光学式ファインダー")
+        finder2 = FinderFactory.create(finder_type="電子式ファインダー")
+        CameraFactory(finder=finder1)
+        CameraFactory(finder=finder2)
+
+        criteria = SetUpCriteria.create({"finder_id": finder2.id})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["finder_id"] == finder2.id
 
     def test_filter_by_maker(self):
-        pass
+        maker1 = MakerFactory.create(name="ソニー")
+        maker2 = MakerFactory.create(name="オリンパス")
+        CameraFactory(maker=maker1)
+        CameraFactory(maker=maker2)
+
+        criteria = SetUpCriteria.create({"maker_id": maker2.id})
+
+        actual = CameraSearcher().filter(criteria)
+
+        assert len(actual) == 1
+        assert actual[0]["maker_id"] == maker2.id
