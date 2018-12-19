@@ -82,7 +82,8 @@ class Review(models.Model):
     url = models.CharField(max_length=255)
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
 
-    # TODO: Reviewのimport失敗してる
+    # TODO: Reviewのimport失敗してる。
+    # TODO: そもそも、reviews.csvにノイズデータも多数混ざっている。要クレンジング
     @classmethod
     def import_csv(cls):
         file_path = "dataset/reviews.csv"
