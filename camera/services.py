@@ -72,7 +72,7 @@ class CameraSearcher:
 
             for spec, val in camera_specs.items():
                 # nameは部分一致でフィルタする
-                if spec == "name" and criteria_dict.get("name", None) is not None:
+                if (spec == "name") and (criteria_dict.get("name", None) is not None):
                     if criteria_dict["name"] not in val:
                         match_flag = False
                         break
@@ -88,18 +88,18 @@ class CameraSearcher:
                         break
                     continue  # 一致していたら、次の検索条件へ
 
+                # min, maxで絞る条件でない場合（cameraのbooleanの属性値を想定）
+                criteria_val = criteria_dict.get(spec, None)
+                if criteria_val is not None and len(str(criteria_val)) != 0:
+                    if val != criteria_val:
+                        match_flag = False
+                        break
+
                 min_key = "min_" + spec
                 max_key = "max_" + spec
 
                 min_value = criteria_dict.get(min_key, None)
                 max_value = criteria_dict.get(max_key, None)
-
-                # min, maxで絞る条件でない場合（cameraのbooleanの属性値を想定）
-                criteria_val = criteria_dict.get(spec, None)
-                if criteria_val is not None and len(criteria_val) != 0:  # もうちょっとなんとかならんか
-                    if val != criteria_dict.get(spec):
-                        match_flag = False
-                        break
 
                 # 最小値でフィルタ
                 if min_value:

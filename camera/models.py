@@ -1,5 +1,6 @@
 # coding: utf-8
 
+from dateutil.parser import *
 from django.db import models
 
 import pandas as pd
@@ -10,7 +11,7 @@ class CameraType(models.Model):
     cam_type = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.cam_type
+        return str(self.__dict__)
 
     @classmethod
     def import_csv(cls):
@@ -28,7 +29,7 @@ class Finder(models.Model):
     finder_type = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.finder_type
+        return str(self.__dict__)
 
     @classmethod
     def import_csv(cls):
@@ -45,7 +46,7 @@ class Frame(models.Model):
     frame_type = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.frame_type
+        return str(self.__dict__)
 
     @classmethod
     def import_csv(cls):
@@ -62,7 +63,7 @@ class Maker(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name
+        return str(self.__dict__)
 
     @classmethod
     def import_csv(cls):
@@ -137,6 +138,39 @@ class Camera(models.Model):
     open_month = models.IntegerField()
     camera_type = models.ForeignKey("CameraType", on_delete=models.PROTECT)
 
+    def open_date(self):
+        if not self.open_year or not self.open_month:
+            return None
+        year = str(self.open_year)
+        month = str(self.open_month)
+
+        open_date_str = "{}/{}".format(year, month)
+        return parse(open_date_str)
+
+    def move_panel_mounted(self):
+        if self.move_panel:
+            return True
+        else:
+            return False
+
+    def bluetooth_mounted(self):
+        if self.bluetooth:
+            return True
+        else:
+            return False
+
+    def is_waterploof(self):
+        if self.waterploof:
+            return True
+        else:
+            return False
+
+    def is_anti_shake(self):
+        if self.anti_shake:
+            return True
+        else:
+            return False
+
     def assign_item(self, item):
       if type(item) == float and math.isnan(item):
         return 0
@@ -203,6 +237,11 @@ class Camera(models.Model):
 
     @classmethod
     def map_cameras(cls):
+        """
+        カメラの機種データを1レコードずつ取り出して、辞書形式にマッピングし、配列に格納するメソッド。
+        ※ 発売日に関しては、str型からdatetime型に整形して、"open_date"として格納している
+        :return: カメラのスペック情報が入った辞書を格納した配列
+        """
         cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type")
         results = {}
         for camera in cameras:
@@ -220,7 +259,7 @@ class Camera(models.Model):
                 "four_k": camera.four_k,
                 "wifi": camera.wifi,
                 "touch_panel": camera.touch_panel,
-                "move_panel": camera.move_panel,
+                "move_panel": camera.move_panel_mounted(),
                 "weight": camera.weight,
                 "width": camera.width,
                 "height": camera.height,
@@ -230,21 +269,20 @@ class Camera(models.Model):
                 "finder_id": camera.finder.id,
                 "f_value_wide": camera.f_value_wide,
                 "shooting_num_with_finder": camera.shooting_num_with_finder,
-                "bluetooth": camera.bluetooth,
+                "bluetooth": camera.bluetooth_mounted(),
                 "zoom": camera.zoom,
                 "min_focus": camera.min_focus,
                 "max_focus": camera.max_focus,
                 "selfie": camera.selfie,
-                "waterploof": camera.waterploof,
+                "waterploof": camera.is_waterploof(),
                 "gps": camera.gps,
                 "nearest_shot": camera.nearest_shot,
-                "anti_shake": camera.anti_shake,
+                "anti_shake": camera.is_anti_shake(),
                 "five_axis_anti_shake": camera.five_axis_anti_shake,
                 "nearest_shot_with_macro_mode": camera.nearest_shot_with_macro_mode,
                 "f_value_tele": camera.f_value_tele,
                 "super_wide": camera.super_wide,
-                "open_year": camera.open_year,
-                "open_month": camera.open_month,
+                "open_date": camera.open_date(),
                 "camera_type_id": camera.camera_type.id
             }
         return results
