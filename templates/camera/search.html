@@ -22,6 +22,9 @@
         </div>
     {% endfor %}
 {% endif %}
+
+{% include 'camera/page.html' %}
+
 <div class="form-group">
   <form action="{% url "camera:search" %}" method="get">
     <ul class="collapsible">

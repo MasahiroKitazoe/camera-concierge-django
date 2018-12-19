@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 
 from camera.models import Camera
 from camera.forms import SearchForm
@@ -17,7 +18,10 @@ def search(request):
     form = SearchForm(request.GET)
     form.is_valid()  # エラーは起きない想定
 
-    cameras = CameraSearcher.filter(form.cleaned_data)
+    search_results = CameraSearcher.filter(form.cleaned_data)
+    paginator = Paginator(search_results, 10)
+    page = request.GET.get("page")
+    cameras = paginator.get_page(page)
     return render(request, 'camera/search.html', {"form": form, "cameras": cameras})
 
 

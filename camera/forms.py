@@ -1,4 +1,3 @@
-from dateutil.parser import *
 from django import forms
 from django.forms import ModelForm
 
