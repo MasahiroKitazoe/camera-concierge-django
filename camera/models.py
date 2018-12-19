@@ -246,6 +246,7 @@ class Camera(models.Model):
         results = {}
         for camera in cameras:
             results[camera.id] = {
+                "id": camera.id,
                 "name": camera.name,
                 "price": camera.price,
                 "pixel": camera.pixel,

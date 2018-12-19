@@ -111,7 +111,11 @@ class SearchForm(ModelForm):
 
     def clean(self):
         """ForeignKeyFieldは、レコードのidを返すようにする"""
-        self.cleaned_data["camera_type"] = self.cleaned_data["camera_type"].id
-        self.cleaned_data["frame"] = self.cleaned_data["frame"].id
-        self.cleaned_data["finder"] = self.cleaned_data["finder"].id
-        self.cleaned_data["maker"] = self.cleaned_data["maker"].id
+        if self.cleaned_data.get("camera_type") is not None:
+            self.cleaned_data["camera_type"] = self.cleaned_data["camera_type"].id
+        if self.cleaned_data.get("frame") is not None:
+            self.cleaned_data["frame"] = self.cleaned_data["frame"].id
+        if self.cleaned_data.get("finder") is not None:
+            self.cleaned_data["finder"] = self.cleaned_data["finder"].id
+        if self.cleaned_data.get("maker") is not None:
+            self.cleaned_data["maker"] = self.cleaned_data["maker"].id

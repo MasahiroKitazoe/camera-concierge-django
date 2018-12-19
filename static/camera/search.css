@@ -10,3 +10,17 @@
 .form-fields{
   display: block;
 }
+
+.camera-link{
+  text-decoration: None;
+  color: white;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all  0.3s ease;
+}
+
+.camera-link:hover {
+  text-decoration: None;
+  opacity: 0.5;
+}
