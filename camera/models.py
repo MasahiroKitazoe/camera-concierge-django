@@ -83,11 +83,8 @@ class Review(models.Model):
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
 
     # TODO: Reviewのimport失敗してる。
-    # TODO: そもそも、reviews.csvにノイズデータも多数混ざっている。要クレンジング
     @classmethod
-    def import_csv(cls):
-        file_path = "dataset/reviews.csv"
-
+    def import_csv(cls, file_path):
         df = pd.read_csv(file_path, encoding='utf-8')
         for _, row in df.iterrows():
             review = Review()
