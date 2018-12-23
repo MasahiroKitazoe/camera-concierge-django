@@ -77,9 +77,9 @@ class Maker(models.Model):
 
 
 class Review(models.Model):
-    title = models.CharField(max_length=255)
-    body = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
+    title = models.TextField()
+    body = models.TextField()
+    url = models.TextField()
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
 
     # TODO: Reviewのimport失敗してる。
@@ -170,62 +170,62 @@ class Camera(models.Model):
             return False
 
     def assign_item(self, item):
-      if type(item) == float and math.isnan(item):
-        return 0
-      else:
-        if type(item) == str:
-          item = item.replace("\u3000", " ")
-        return item
+        if type(item) == float and math.isnan(item):
+            return 0
+        else:
+            if type(item) == str:
+                item = item.replace("\u3000", " ")
+            return item
 
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/cameras.csv"
+        file_path = "dataset/cameras.csv"
 
-      df = pd.read_csv(file_path, encoding='utf-8')
-      for _, row in df.iterrows():
-        camera = Camera()
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            camera = Camera()
 
-        camera.name = camera.assign_item(row[1])
-        camera.price = camera.assign_item(row[2])
-        camera.pixel = camera.assign_item(row[3])
-        camera.min_iso = camera.assign_item(row[4])
-        camera.max_iso = camera.assign_item(row[5])
-        camera.continuous_shooting_performance = camera.assign_item(row[6])
-        camera.shutter_speed = camera.assign_item(row[7])
-        camera.monitor_size = camera.assign_item(row[8])
-        camera.monitor_pixel = camera.assign_item(row[9])
-        camera.shooting_num = camera.assign_item(row[10])
-        camera.four_k = camera.assign_item(row[11])
-        camera.wifi = camera.assign_item(row[12])
-        camera.touch_panel = camera.assign_item(row[13])
-        camera.move_panel = camera.assign_item(row[14])
-        camera.weight = camera.assign_item(row[15])
-        camera.width = camera.assign_item(row[16])
-        camera.height = camera.assign_item(row[17])
-        camera.depth = camera.assign_item(row[18])
-        camera.frame_id = camera.assign_item(row[19])
-        camera.maker_id = camera.assign_item(row[20])
-        camera.finder_id = camera.assign_item(row[21])
-        camera.f_value_wide = camera.assign_item(row[22])
-        camera.shooting_num_with_finder = camera.assign_item(row[23])
-        camera.bluetooth = camera.assign_item(row[24])
-        camera.zoom = camera.assign_item(row[25])
-        camera.min_focus = camera.assign_item(row[26])
-        camera.max_focus = camera.assign_item(row[27])
-        camera.selfie = camera.assign_item(row[28])
-        camera.waterproof = camera.assign_item(row[29])
-        camera.gps = camera.assign_item(row[30])
-        camera.nearest_shot = camera.assign_item(row[31])
-        camera.anti_shake = camera.assign_item(row[32])
-        camera.five_axis_anti_shake = camera.assign_item(row[33])
-        camera.nearest_shot_with_macro_mode = camera.assign_item(row[34])
-        camera.f_value_tele = camera.assign_item(row[35])
-        camera.super_wide = camera.assign_item(row[36])
-        camera.open_year = camera.assign_item(row[37])
-        camera.open_month = camera.assign_item(row[38])
-        camera.camera_type_id = camera.assign_item(row[39])
+            camera.name = camera.assign_item(row[1])
+            camera.price = camera.assign_item(row[2])
+            camera.pixel = camera.assign_item(row[3])
+            camera.min_iso = camera.assign_item(row[4])
+            camera.max_iso = camera.assign_item(row[5])
+            camera.continuous_shooting_performance = camera.assign_item(row[6])
+            camera.shutter_speed = camera.assign_item(row[7])
+            camera.monitor_size = camera.assign_item(row[8])
+            camera.monitor_pixel = camera.assign_item(row[9])
+            camera.shooting_num = camera.assign_item(row[10])
+            camera.four_k = camera.assign_item(row[11])
+            camera.wifi = camera.assign_item(row[12])
+            camera.touch_panel = camera.assign_item(row[13])
+            camera.move_panel = camera.assign_item(row[14])
+            camera.weight = camera.assign_item(row[15])
+            camera.width = camera.assign_item(row[16])
+            camera.height = camera.assign_item(row[17])
+            camera.depth = camera.assign_item(row[18])
+            camera.frame_id = camera.assign_item(row[19])
+            camera.maker_id = camera.assign_item(row[20])
+            camera.finder_id = camera.assign_item(row[21])
+            camera.f_value_wide = camera.assign_item(row[22])
+            camera.shooting_num_with_finder = camera.assign_item(row[23])
+            camera.bluetooth = camera.assign_item(row[24])
+            camera.zoom = camera.assign_item(row[25])
+            camera.min_focus = camera.assign_item(row[26])
+            camera.max_focus = camera.assign_item(row[27])
+            camera.selfie = camera.assign_item(row[28])
+            camera.waterproof = camera.assign_item(row[29])
+            camera.gps = camera.assign_item(row[30])
+            camera.nearest_shot = camera.assign_item(row[31])
+            camera.anti_shake = camera.assign_item(row[32])
+            camera.five_axis_anti_shake = camera.assign_item(row[33])
+            camera.nearest_shot_with_macro_mode = camera.assign_item(row[34])
+            camera.f_value_tele = camera.assign_item(row[35])
+            camera.super_wide = camera.assign_item(row[36])
+            camera.open_year = camera.assign_item(row[37])
+            camera.open_month = camera.assign_item(row[38])
+            camera.camera_type_id = camera.assign_item(row[39])
 
-        camera.save()
+            camera.save()
 
     @classmethod
     def delete_all_records(cls):
