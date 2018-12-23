@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 
-from .forms import SearchForm
-from .services import CameraSearcher
+from camera.models import Camera
+from camera.forms import SearchForm
+from camera.services import CameraSearcher
 
 
 def top_page(request):
@@ -9,12 +11,20 @@ def top_page(request):
 
 
 def search(request):
-    if len(request.GET) == 0:
+    if not request.GET:
         form = SearchForm()
         return render(request, 'camera/search.html', {"form": form})
 
     form = SearchForm(request.GET)
     form.is_valid()  # エラーは起きない想定
 
-    cameras = CameraSearcher.filter(form.cleaned_data)
+    search_results = CameraSearcher.filter(form.cleaned_data)
+    paginator = Paginator(search_results, 10)
+    page = request.GET.get("page")
+    cameras = paginator.get_page(page)
     return render(request, 'camera/search.html', {"form": form, "cameras": cameras})
+
+
+def detail(request, camera_id):
+    camera = get_object_or_404(Camera, pk=camera_id)
+    return render(request, "camera/detail.html", {"camera": camera})

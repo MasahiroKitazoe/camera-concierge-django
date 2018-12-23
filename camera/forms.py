@@ -30,8 +30,10 @@ class SearchForm(ModelForm):
     max_height = forms.FloatField(label="高さ(上限)", required=False)
     min_depth = forms.FloatField(label="奥行(下限)", required=False)
     max_depth = forms.FloatField(label="奥行(上限)", required=False)
-    min_f_value = forms.ChoiceField(label="F値(下限)", required=False, choices=F_VALUE)
-    max_f_value = forms.ChoiceField(label="F値(上限)", required=False, choices=F_VALUE)
+    min_f_value_wide = forms.ChoiceField(label="ワイド端F値(下限)", required=False, choices=F_VALUE)
+    max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
+    min_f_value_tele = forms.ChoiceField(label="テレ端F値(下限)", required=False, choices=F_VALUE)
+    max_f_value_tele = forms.ChoiceField(label="テレ端F値(上限)", required=False, choices=F_VALUE)
     min_shootin_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(下限)", required=False)
     max_shootin_num_with_finder = \
@@ -44,36 +46,19 @@ class SearchForm(ModelForm):
       forms.FloatField(label="マクロモード時最短撮影距離(下限)", required=False)
     max_nearest_shot_with_macro_mode = \
       forms.FloatField(label="マクロモード時最短撮影距離(上限)", required=False)
-    min_f_value_wide = forms.ChoiceField(label="ワイド端F値(下限)", required=False, choices=F_VALUE)
-    max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
-    min_open_date = forms.DateTimeField(label="発売日(下限)", required=False)
-    max_open_date = forms.DateTimeField(label="発売日(上限)", required=False)
-
-    def __init__(self, *args, **kwargs):
-        super(SearchForm, self).__init__(*args, **kwargs)
-        self.fields["name"].required = False
-        self.fields["min_iso"].required = False
-        self.fields["max_iso"].required = False
-        self.fields["four_k"].required = False
-        self.fields["wifi"].required = False
-        self.fields["touch_panel"].required = False
-        self.fields["move_panel"].required = False
-        self.fields["frame"].required = False
-        self.fields["maker"].required = False
-        self.fields["finder"].required = False
-        self.fields["bluetooth"].required = False
-        self.fields["min_focus"].required = False
-        self.fields["max_focus"].required = False
-        self.fields["selfie"].required = False
-        self.fields["waterploof"].required = False
-        self.fields["gps"].required = False
-        self.fields["nearest_shot"].required = False
-        self.fields["anti_shake"].required = False
-        self.fields["five_axis_anti_shake"].required = False
-        self.fields["nearest_shot_with_macro_mode"].required = False
-        self.fields["f_value_wide"].required = False
-        self.fields["super_wide"].required = False
-        self.fields["camera_type"].required = False
+    min_open_date = forms.DateField(label="発売日(下限)", required=False)
+    max_open_date = forms.DateField(label="発売日(上限)", required=False)
+    four_k = forms.ChoiceField(label="4K動画撮影", required=False, choices=BOOLEAN)
+    wifi = forms.ChoiceField(label="Wifi機能", required=False, choices=BOOLEAN)
+    touch_panel = forms.ChoiceField(label="タッチパネル", required=False, choices=BOOLEAN)
+    move_panel = forms.ChoiceField(label="可動式モニター", required=False, choices=BOOLEAN)
+    bluetooth = forms.ChoiceField(label="Bluetooth", required=False, choices=BOOLEAN)
+    selfie = forms.ChoiceField(label="自撮り", required=False, choices=BOOLEAN)
+    waterploof = forms.ChoiceField(label="防水", required=False, choices=BOOLEAN)
+    gps = forms.ChoiceField(label="GPS", required=False, choices=BOOLEAN)
+    anti_shake = forms.ChoiceField(label="手ぶれ補正", required=False, choices=BOOLEAN)
+    five_axis_anti_shake = forms.ChoiceField(label="ボディ内5軸手ぶれ補正", required=False, choices=BOOLEAN)
+    super_wide = forms.ChoiceField(label="超広角", required=False, choices=BOOLEAN)
 
     class Meta:
         model = Camera
@@ -81,60 +66,55 @@ class SearchForm(ModelForm):
         "name",
         "min_iso",
         "max_iso",
-        "four_k",
-        "wifi",
-        "touch_panel",
-        "move_panel",
         "frame",
         "maker",
         "finder",
-        "bluetooth",
         "min_focus",
         "max_focus",
-        "selfie",
-        "waterploof",
-        "gps",
         "nearest_shot",
-        "anti_shake",
-        "five_axis_anti_shake",
         "nearest_shot_with_macro_mode",
         "f_value_wide",
-        "super_wide",
         "camera_type",
         ]
-        widgets = {
-                "four_k": forms.Select(choices=BOOLEAN),
-                "wifi": forms.Select(choices=BOOLEAN),
-                "touch_panel": forms.Select(choices=BOOLEAN),
-                "move_panel": forms.Select(choices=BOOLEAN),
-                "bluetooth": forms.Select(choices=BOOLEAN),
-                "selfie": forms.Select(choices=BOOLEAN),
-                "waterploof": forms.Select(choices=BOOLEAN),
-                "gps": forms.Select(choices=BOOLEAN),
-                "anti_shake": forms.Select(choices=BOOLEAN),
-                "five_axis_anti_shake": forms.Select(choices=BOOLEAN),
-                "anti_shake": forms.Select(choices=BOOLEAN),
-                "super_wide": forms.Select(choices=BOOLEAN),
-        }
         labels = {
         "name": "機種名",
         "min_iso": "最小ISO感度",
         "max_iso": "最大ISO感度",
-        "four_k": "4K動画撮影",
-        "wifi": "WiFi機能",
-        "touch_panel": "タッチパネル",
-        "move_panel": "可動式パネル",
         "frame": "センサーサイズ",
         "maker": "メーカー",
         "finder": "ファインダー",
-        "bluetooth": "Bluetooth機能",
         "min_focus": "最短焦点距離",
         "max_focus": "最長焦点距離",
-        "selfie": "自撮り",
-        "waterploof": "防水",
-        "gps": "GPS機能",
-        "anti_shake": "手ぶれ補正",
-        "five_axis_anti_shake": "5軸手ぶれ補正",
-        "super_wide": "超広角",
         "camera_type": "カメラタイプ",
+        "nearest_shot": "最短撮影距離"
         }
+
+    def __init__(self, *args, **kwargs):
+        super(SearchForm, self).__init__(*args, **kwargs)
+        self.fields["name"].required = False
+        self.fields["min_iso"].required = False
+        self.fields["max_iso"].required = False
+        self.fields["frame"].required = False
+        self.fields["maker"].required = False
+        self.fields["finder"].required = False
+        self.fields["bluetooth"].required = False
+        self.fields["min_focus"].required = False
+        self.fields["max_focus"].required = False
+        self.fields["nearest_shot"].required = False
+        self.fields["anti_shake"].required = False
+        self.fields["five_axis_anti_shake"].required = False
+        self.fields["nearest_shot_with_macro_mode"].required = False
+        self.fields["camera_type"].required = False
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-fields'
+
+    def clean(self):
+        """ForeignKeyFieldは、レコードのidを返すようにする"""
+        if self.cleaned_data.get("camera_type") is not None:
+            self.cleaned_data["camera_type"] = self.cleaned_data["camera_type"].id
+        if self.cleaned_data.get("frame") is not None:
+            self.cleaned_data["frame"] = self.cleaned_data["frame"].id
+        if self.cleaned_data.get("finder") is not None:
+            self.cleaned_data["finder"] = self.cleaned_data["finder"].id
+        if self.cleaned_data.get("maker") is not None:
+            self.cleaned_data["maker"] = self.cleaned_data["maker"].id
