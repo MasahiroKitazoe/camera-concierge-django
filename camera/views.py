@@ -26,5 +26,7 @@ def search(request):
 
 
 def detail(request, camera_id):
-    camera = get_object_or_404(Camera, pk=camera_id)
-    return render(request, "camera/detail.html", {"camera": camera})
+    camera = get_object_or_404(Camera.objects.select_related("camera_type", "finder", "frame"), pk=camera_id)
+    reviews = camera.review_set.all()
+    print(len(reviews))
+    return render(request, "camera/detail.html", {"camera": camera, "reviews": reviews})
