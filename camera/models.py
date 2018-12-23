@@ -82,7 +82,6 @@ class Review(models.Model):
     url = models.TextField()
     camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
 
-    # TODO: Reviewのimport失敗してる。
     @classmethod
     def import_csv(cls, file_path):
         df = pd.read_csv(file_path, encoding='utf-8')
