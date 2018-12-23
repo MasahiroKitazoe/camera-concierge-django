@@ -9,10 +9,12 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">{{ forloop.counter }}位</span>
-                    <h3>{{ camera.name }}</h3>
+                    <a class="camera-link" href="{% url "camera:detail" camera.id %}">
+                        <h3>{{ camera.name }}</h3>
+                    </a>
                 </div>
                 <div class="card-action">
-                  <a href="#">This is a link</a>
+                  <a href="{% url "camera:detail" camera.id %}">詳細を見る</a>
                 </div>
               </div>
             </div>
@@ -20,6 +22,9 @@
         </div>
     {% endfor %}
 {% endif %}
+
+{% include 'camera/page.html' %}
+
 <div class="form-group">
   <form action="{% url "camera:search" %}" method="get">
     <ul class="collapsible">
@@ -341,23 +346,6 @@
       <li>
         <div class="collapsible-header">
           <i class="fas fa-angle-down"></i>
-            <p class="collapsible-label">F値</p>
-        </div>
-        <div class="collapsible-body">
-          {{ form.min_f_value.label_tag }}
-          {{ form.min_f_value }}
-          {{ form.min_f_value.help_text }}
-          {{ form.min_f_value.errors }}
-
-          {{ form.max_f_value.label_tag }}
-          {{ form.max_f_value }}
-          {{ form.max_f_value.help_text }}
-          {{ form.max_f_value.errors }}
-        </div>
-      </li>
-      <li>
-        <div class="collapsible-header">
-          <i class="fas fa-angle-down"></i>
             <p class="collapsible-label">ワイド端F値</p>
         </div>
         <div class="collapsible-body">
@@ -370,6 +358,23 @@
           {{ form.max_f_value_wide }}
           {{ form.max_f_value_wide.help_text }}
           {{ form.max_f_value_wide.errors }}
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header">
+          <i class="fas fa-angle-down"></i>
+            <p class="collapsible-label">テレ端F値</p>
+        </div>
+        <div class="collapsible-body">
+          {{ form.min_f_value_tele.label_tag }}
+          {{ form.min_f_value_tele }}
+          {{ form.min_f_value_tele.help_text }}
+          {{ form.min_f_value_tele.errors }}
+
+          {{ form.max_f_value_tele.label_tag }}
+          {{ form.max_f_value_tele }}
+          {{ form.max_f_value_tele.help_text }}
+          {{ form.max_f_value_tele.errors }}
         </div>
       </li>
       <li>
