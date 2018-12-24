@@ -1,7 +1,7 @@
 {% extends 'camera/base.html' %}
 
 {% block content %}
-    <h1 class="detail-title">{{ camera.name }}</h1>
+    <h1 class="detail-title">{{ camera.name }}の<br>スペック＆レビュー</h1>
     <div class="camera-info">
         <div class="row">
             <div class="col-sm-6">
@@ -252,7 +252,7 @@
                 <div class="col-sm-8" style="margin: auto;">
                   <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
-                      <span class="card-title" id="review-card-title">{{ review.title }}</span>
+                      <h3 class="card-title" id="review-card-title">{{ review.title }}</h3>
                       <p>{{ review.body }}</p>
                     </div>
                     <div class="card-action">
