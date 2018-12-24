@@ -7,8 +7,8 @@ class IndexView(generic.ListView):
     template_name = "ranking/index.html"
     context_object_name = "ranks"
 
-  def get_queryset(self):
-      return Rank.objects.all()
+    def get_queryset(self):
+        return Rank.objects.all()
 
 
 class DetailView(generic.DetailView):
