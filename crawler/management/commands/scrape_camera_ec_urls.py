@@ -8,22 +8,24 @@ from camera.models import Camera
 
 
 class Command(BaseCommand):
-    help = "Cameraモデルの機種名から、amazonの詳細ページを取得するカスタムコマンド"
+    help = "Cameraモデルの機種名から、amazonの詳細ページと、楽天の検索ページのURLを取得し、csvに出力する"
 
     def handle(self, *args, **options):
         cameras = Camera.map_cameras()
-        result_df = pd.DataFrame(columns=["camera_id", "amazon_url"])
+        result_df = pd.DataFrame(columns=["camera_id", "amazon_url", "rakuten_url"])
 
         for _, camera in cameras.items():
             row = pd.Series()
             row["camera_id"] = camera["id"]
 
             keyword = camera["name"].replace(" ", "+")
-            url = "https://www.amazon.co.jp/s/ref=nb_sb_noss_2?__mk_ja_JP=カタカナ&url=search-alias%3Daps&field-keywords={}".format(keyword)
+            row["rakuten_url"] = "https://search.rakuten.co.jp/search/mall/" + keyword + "/"
+            amazon_search_url = \
+                "https://www.amazon.co.jp/s/ref=nb_sb_noss_2?__mk_ja_JP=カタカナ&url=search-alias%3Daps&field-keywords={}".format(keyword)
 
             retry_count = 0
             while retry_count <= 10:
-                res = requests.get(url)
+                res = requests.get(amazon_search_url)
                 print(res.status_code)
                 if res.status_code == 200:
                     break
@@ -53,4 +55,4 @@ class Command(BaseCommand):
             row["amazon_url"] = product_url
             result_df = result_df.append(row, ignore_index=True)
 
-        result_df.to_csv("crawler/output/amazon_urls.csv")
+        result_df.to_csv("crawler/output/camera_ec_urls.csv")
