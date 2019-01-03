@@ -8,10 +8,6 @@
       <div class="row center">
         <h5 class="header col s12 light">あなたの相棒になるカメラが見つかるサイト</h5>
       </div>
-      <div class="row center">
-        <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light orange">カメラを見つける</a>
-      </div>
-      <br><br>
 
     </div>
   </div>
@@ -26,8 +22,10 @@
           <div class="icon-block">
             <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
             <h5 class="center">用途別にカメラの<br>ランキングを作成</h5>
-            <p class="light">インターネット常に数多あるカメラのレビューを集計し、人気ランキングを作成。</p>
-            <a class="waves-effect waves-light btn">Check!</a>
+            <p class="light">インターネット上に数多あるカメラのレビューを集計し、人気ランキングを作成。</p>
+          </div>
+          <div class="icon-button center">
+              <a href="{% url "ranking:index" %}" class="waves-effect waves-light btn center">人気ランキングを見る</a>
           </div>
         </div>
 
@@ -35,8 +33,10 @@
           <div class="icon-block">
             <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
             <h5 class="center">ランキングの<br>絞り検索機能</h5>
-            <p class="light">予算や用途などで、ランキングをカスタマイズすることが可能。自分の相棒になるべき機種が見つかる</p>
-            <a class="waves-effect waves-light btn">Check!</a>
+            <p class="light">予算や用途などに応じて、ランキングをカスタマイズ。自分の相棒になるべき機種が見つかる</p>
+          </div>
+          <div class="icon-button center">
+              <a href="{% url "camera:search" %}" class="waves-effect waves-light btn center">検索してみる</a>
           </div>
         </div>
 
@@ -44,8 +44,10 @@
           <div class="icon-block">
             <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
             <h5 class="center">気になる機種の<br>レビューをチェック</h5>
-            <p class="light">気になる機種のレビュー記事を集め、人気レビューを表示。良レビューから参考になる情報を仕入れる</p>
-            <a class="waves-effect waves-light btn">Check!</a>
+            <p class="light">機種ごとに、レビュー記事を表示。良レビューから参考になる情報を仕入れる</p>
+          </div>
+          <div class="icon-button center">
+              <a href="{% url "ranking:index" %}" class="waves-effect waves-light btn center">カメラを探してレビューをチェック</a>
           </div>
         </div>
       </div>

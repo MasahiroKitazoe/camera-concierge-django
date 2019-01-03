@@ -1,5 +1,267 @@
 {% extends 'camera/base.html' %}
 
 {% block content %}
-{{ camera.name }}
+    <h1 class="detail-title">{{ camera.name }}の<br>スペック＆レビュー</h1>
+    <div class="camera-info">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="camera-info-left">
+                    <a class="camera-image" href="https://www.amazon.co.jp/gp/product/B07FBJ9WNB/ref=as_li_ss_il?pf_rd_p=7b903293-68b0-4a33-9b7c-65c76866a371&pf_rd_r=GVN04RCZ981TSBKARKXE&linkCode=li3&tag=masa101408-22&linkId=59d99f226e736e2ca396468b93980041&language=ja_JP" target="_blank"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B07FBJ9WNB&Format=_SL250_&ID=AsinImage&MarketPlace=JP&ServiceVersion=20070822&WS=1&tag=masa101408-22&language=ja_JP" ></a><img src="https://ir-jp.amazon-adsystem.com/e/ir?t=masa101408-22&language=ja_JP&l=li3&o=9&a=B07FBJ9WNB" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="camera-info-right">
+                    <li>参考価格: {{ camera.price }}円</li>
+                    <li>種類: {{ camera.camera_type.cam_type }}</li>
+                    <li>センサーサイズ: {{ camera.frame.frame_type }}</li>
+                    <li>発売日: {{ camera.open_date|date:"Y年m月d日" }}</li>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 5px;">
+        <div class="col s12 m6">
+          <a href="#" class="ec-buttons">
+              <div class="card amber" id="amazon-button-card">
+                <div class="card-content white-text" id="amazon-button">
+                  <span class="card-title" id="amazon-button-title"><i class="fab fa-amazon"></i>Amazonで見る</span>
+                </div>
+              </div>
+          </a>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 5px;">
+        <div class="col s12 m6">
+          <a href="#" class="ec-buttons">
+              <div class="card deep-orange darken-2" id="rakuten-button-card">
+                <div class="card-content white-text" id="rakuten-button">
+                  <span class="card-title" id="amazon-button-title"><i class="fas fa-shopping-cart"></i>楽天で見る</span>
+                </div>
+              </div>
+          </a>
+        </div>
+    </div>
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header">
+              <i class="fas fa-angle-down"></i>
+                <p class="collapsible-label">スペック詳細</p>
+            </div>
+            <div class="collapsible-body">
+              <table>
+                  <tr>
+                      <th>機種名</th>
+                      <th>{{ camera.name }}</th>
+                  </tr>
+                  <tr>
+                      <th>メーカー</th>
+                      <th>{{ camera.maker.name }}</th>
+                  </tr>
+                  <tr>
+                      <th>発売日</th>
+                      <th>{{ camera.open_date|date:"Y年m月d日" }}</th>
+                  </tr>
+                  <tr>
+                      <th>カメラのタイプ</th>
+                      <th>{{ camera.camera_type.cam_type }}</th>
+                  </tr>
+                  <tr>
+                      <th>価格</th>
+                      <th>{{ camera.price }}円</th>
+                  </tr>
+                  <tr>
+                      <th>センサーサイズ</th>
+                      <th>{{ camera.frame.frame_type }}</th>
+                  </tr>
+                  <tr>
+                      <th>有効画素数</th>
+                      <th>{{ camera.pixel }}万画素</th>
+                  </tr>
+                  {% if camera.camera_type.cam_type == "デジタルカメラ" %}
+                      <tr>
+                          <th>焦点距離</th>
+                          <th>{{ camera.min_focus }}mm ~ {{ camera.max_focus }}mm</th>
+                      </tr>
+                      <tr>
+                          <th>ズーム倍率</th>
+                          <th>{{ camera.zoom }}倍</th>
+                      </tr>
+                      <tr>
+                        <th>最小F値</th>
+                        <th>{{ camera.f_value_wide }}(ワイド端) ~ {{ camera.f_value_tele }}(テレ端)</th>
+                      </tr>
+                      <tr>
+                          <th>最短撮影距離</th>
+                          <th>{{ camera.nearest_shot }}cm</th>
+                      </tr>
+                      {% if camera.nearest_shot_with_macro_mode %}
+                      <tr>
+                          <th>最短撮影距離(マクロモード時)</th>
+                          <th>{{ camera.nearest_shot_with_macro_mode }}cm</th>
+                      </tr>
+                      {% endif %}
+                  {% endif %}
+                  <tr>
+                      <th>ISO感度</th>
+                      <th>{{ camera.min_iso }} ~ {{ camera.max_iso }}</th>
+                  </tr>
+                  <tr>
+                      <th>連写性能</th>
+                      <th>{{ camera.continuous_shooting_performance }}枚/秒</th>
+                  </tr>
+                　<tr>
+                      <th>シャッタースピード</th>
+                      <th>{{ camera.shutter_speed }}</th>
+                  </tr>
+                  <tr>
+                      <th>モニターサイズ</th>
+                      <th>{{ camera.monitor_size }}型</th>
+                  </tr>
+                　<tr>
+                      <th>モニター解像度</th>
+                      <th>{{ camera.monitor_pixel }}万ドット</th>
+                  </tr>
+                　<tr>
+                      <th>撮影可能枚数</th>
+                      <th>{{ camera.shooting_num }}枚</th>
+                  </tr>
+                  {% if camera.shooting_num_with_finder %}
+                      <tr>
+                          <th>撮影可能枚数(ファインダー使用時)</th>
+                          <th>{{ camera.shooting_num_with_finder }}枚</th>
+                      </tr>
+                  {% endif %}
+                　<tr>
+                      <th>自撮り</th>
+                      {% if camera.selfie %}
+                        <th>可能</th>
+                      {% else %}
+                        <th>不可能</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>手ぶれ補正</th>
+                      {% if camera.anti_shake %}
+                        <th>{{ camera.anti_shake }}</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>ボディ内５軸手ぶれ補正</th>
+                      {% if camera.five_axis_anti_shake %}
+                        <th>搭載</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>4K動画撮影</th>
+                      {% if camera.four_k %}
+                        <th>可能</th>
+                      {% else %}
+                        <th>不可能</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>Wifi機能</th>
+                      {% if camera.wifi %}
+                        <th>搭載</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>Bluetooth機能</th>
+                      {% if camera.bluetooth != "0" %}
+                        <th>{{ camera.bluetooth }}</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                　<tr>
+                      <th>タッチパネル</th>
+                      {% if camera.touch_panel %}
+                        <th>搭載</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                　<tr>
+                      <th>可動式パネル</th>
+                      {% if camera.move_panel %}
+                        <th>搭載</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                　<tr>
+                      <th>GPS</th>
+                      {% if camera.gps %}
+                        <th>搭載</th>
+                      {% else %}
+                        <th>非搭載</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>防水</th>
+                      {% if camera.waterploof %}
+                        <th>{{ camera.waterploof }}</th>
+                      {% else %}
+                        <th>なし</th>
+                      {% endif %}
+                  </tr>
+                  <tr>
+                      <th>超広角(360度カメラ)</th>
+                      {% if camera.super_wide %}
+                        <th>○</th>
+                      {% else %}
+                        <th>✖︎</th>
+                      {% endif %}
+                  </tr>
+                  {% if camera.finder.finder_type %}
+                      <tr>
+                          <th>ファインダー</th>
+                          <th>{{ camera.finder.finder_type }}</th>
+                      </tr>
+                  {% endif %}
+                  <tr>
+                      <th>重さ</th>
+                      <th>{{ camera.weight }}g</th>
+                  </tr>
+                  <tr>
+                      <th>幅</th>
+                      <th>{{ camera.width }}mm</th>
+                  </tr>
+                  <tr>
+                      <th>高さ</th>
+                      <th>{{ camera.height }}mm</th>
+                  </tr>
+                  <tr>
+                      <th>奥行</th>
+                      <th>{{ camera.weight }}mm</th>
+                  </tr>
+              </table>
+            </div>
+        </li>
+    </ul>
+    <h2 class="review-section-title">{{ camera.name }}のレビュー記事</h2>
+    <div class="reviews">
+        {% for review in reviews %}
+              <div class="row">
+                <div class="col-sm-8" style="margin: auto;">
+                  <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                      <h3 class="card-title" id="review-card-title">{{ review.title }}</h3>
+                      <p>{{ review.body }}</p>
+                    </div>
+                    <div class="card-action">
+                      <a href="{{ review.url }}" target="_blank">このレビューが掲載されている記事はこちらから</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        {% endfor %}
+    </div>
+    {% include 'camera/page/review_page.html' %}
 {% endblock %}

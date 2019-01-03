@@ -23,7 +23,7 @@
     {% endfor %}
 {% endif %}
 
-{% include 'camera/page.html' %}
+{% include 'camera/page/camera_page.html' %}
 
 <div class="form-group">
   <form action="{% url "camera:search" %}" method="get">
@@ -293,7 +293,7 @@
       <li>
         <div class="collapsible-header">
           <i class="fas fa-angle-down"></i>
-            <p class="collapsible-label">奥行き</p>
+            <p class="collapsible-label">奥行</p>
         </div>
         <div class="collapsible-body">
           {{ form.min_depth.label_tag }}
@@ -383,15 +383,15 @@
             <p class="collapsible-label">撮影可能枚数(ファインダー使用時)</p>
         </div>
         <div class="collapsible-body">
-          {{ form.min_shootin_num_with_finder.label_tag }}
-          {{ form.min_shootin_num_with_finder }}
-          {{ form.min_shootin_num_with_finder.help_text }}
-          {{ form.min_shootin_num_with_finder.errors }}
+          {{ form.min_shooting_num_with_finder.label_tag }}
+          {{ form.min_shooting_num_with_finder }}
+          {{ form.min_shooting_num_with_finder.help_text }}
+          {{ form.min_shooting_num_with_finder.errors }}
 
-          {{ form.max_shootin_num_with_finder.label_tag }}
-          {{ form.max_shootin_num_with_finder }}
-          {{ form.max_shootin_num_with_finder.help_text }}
-          {{ form.max_shootin_num_with_finder.errors }}
+          {{ form.max_shooting_num_with_finder.label_tag }}
+          {{ form.max_shooting_num_with_finder }}
+          {{ form.max_shooting_num_with_finder.help_text }}
+          {{ form.max_shooting_num_with_finder.errors }}
         </div>
       </li>
       <li>

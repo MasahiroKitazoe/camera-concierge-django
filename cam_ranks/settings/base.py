@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["camera-concierge-django.herokuapp.com",
 INSTALLED_APPS = [
     'ranking',
     'camera',
+    'crawler',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
