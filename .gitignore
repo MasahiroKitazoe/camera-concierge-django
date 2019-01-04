@@ -9,3 +9,4 @@ staticfiles/
 memo.md
 crawler/output/*
 *chromedriver
+*.env

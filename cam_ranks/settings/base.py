@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -122,3 +123,15 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
+
+env = environ.Env()
+
+READ_ENV_FILE = env.bool("DJANGO_READ_ENV_FILE", default=False)
+if READ_ENV_FILE:
+    env_file = str(os.path.join(BASE_DIR, ".env"))
+    env.read_env(env_file)
+
+AMAZON_EMAIL = env("AMAZON_EMAIL")
+AMAZON_PASSWORD = env("AMAZON_PASSWORD")
+RAKUTEN_EMAIL = env("RAKUTEN_EMAIL")
+RAKUTEN_PASSWORD = env("RAKUTEN_PASSWORD")
