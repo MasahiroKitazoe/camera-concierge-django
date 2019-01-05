@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         amazon_camera_links = pd.read_csv("crawler/output/camera_ec_urls.csv")
-        result_df = pd.DataFrame(columns=["camera_id", "amazon_afflink"])
+        result_df = pd.DataFrame(columns=["camera_id", "amazon_afflink", "rakuten_afflink", "image_url"])
 
         for _, row in amazon_camera_links.iterrows():
             result_row = pd.Series()
@@ -30,13 +30,14 @@ class Command(BaseCommand):
 
             # amazonのアフィリエイトリンクの取得
             amazon_url = row["amazon_url"]
-            result_row["amazon_afflink"] = self.scrape_amazon_afflink(amazon_url)
+            result_row["amazon_afflink"], result_row["image_url"] = self.scrape_amazon_afflink(amazon_url)
 
             # 楽天のアフィリエイトリンクの取得
             rakuten_url = row["rakuten_url"]
             result_row["rakuten_afflink"] = self.scrape_rakuten_afflink(rakuten_url)
 
             result_df = result_df.append(result_row, ignore_index=True)
+            result_df.to_csv("crawler/output/aff_links.csv")
 
         result_df.to_csv("crawler/output/aff_links.csv")
 
@@ -53,12 +54,16 @@ class Command(BaseCommand):
         # camera_urlのページからアフィリエイトリンクを取得
         driver.get(camera_url)
         driver.find_element_by_css_selector("#amzn-ss-text-link span span strong a").click()
-        time.sleep(5)
+        time.sleep(5)  # 読み込み待ち
         soup = BeautifulSoup(driver.page_source, "html.parser")
         aff_link = soup.find(id="amzn-ss-text-shortlink-textarea").string
+        try:
+            camera_image_url = soup.select("#imgTagWrapperId img")[0].get("src")
+        except:
+            camera_image_url = "not detected"
 
         driver.close()
-        return aff_link
+        return aff_link, camera_image_url
 
     def scrape_rakuten_afflink(self, camera_url):
         driver = webdriver.Chrome("crawler/management/commands/chromedriver")
