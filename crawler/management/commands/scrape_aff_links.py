@@ -37,7 +37,6 @@ class Command(BaseCommand):
             result_row["rakuten_afflink"] = self.scrape_rakuten_afflink(rakuten_url)
 
             result_df = result_df.append(result_row, ignore_index=True)
-            result_df.to_csv("crawler/output/aff_links.csv")
 
         result_df.to_csv("crawler/output/aff_links.csv")
 
