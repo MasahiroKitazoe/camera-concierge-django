@@ -1,3 +1,13 @@
+from camera.models import Finder, Maker
+
+
+def create_model_choices(model):
+    choices = [(None, "--------")]
+    for instance in model.objects.all():
+        choices.append((instance.id, instance.choice_name()))
+    return tuple(choices)
+
+
 SHUTTER_SPEED = (
     (None, "--------"),
     (30, "30秒"),
@@ -72,3 +82,30 @@ F_VALUE = (
 )
 
 BOOLEAN = ((None, "--------"), (True, "○"), (False, "なし"))
+
+CAMERA_TYPE_CHOICES = (
+    (None, "--------"),
+    (1, "コンデジ"),
+    (2, "ミラーレス一眼"),
+    (3, "一眼レフ")
+)
+
+FRAME_CHOICES = (
+    (None, "--------"),
+    (1, "中判サイズ"),
+    (2, "フルサイズ"),
+    (3, "APS-C"),
+    (4, "4/3型"),
+    (5, "1型"),
+    (6, "1/2.3型"),
+    (7, "1/3.1型"),
+    (8, "1/1.7型"),
+    (9, "1.5型"),
+    (10, "1/10型"),
+    (11, "1/5型"),
+)
+
+# ファインダーとメーカーは増える可能性があるので、動的に指定
+FINDER_CHOICES = create_model_choices(Finder)
+
+MAKER_CHOICES = create_model_choices(Maker)

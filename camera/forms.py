@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 from .models import Camera
-from .consts import SHUTTER_SPEED, F_VALUE, BOOLEAN
+from .consts import SHUTTER_SPEED, F_VALUE, BOOLEAN, CAMERA_TYPE_CHOICES, FINDER_CHOICES, FRAME_CHOICES, MAKER_CHOICES
 
 
 class SearchForm(ModelForm):
@@ -59,6 +59,10 @@ class SearchForm(ModelForm):
     anti_shake = forms.ChoiceField(label="手ぶれ補正", required=False, choices=BOOLEAN)
     five_axis_anti_shake = forms.ChoiceField(label="ボディ内5軸手ぶれ補正", required=False, choices=BOOLEAN)
     super_wide = forms.ChoiceField(label="超広角", required=False, choices=BOOLEAN)
+    camera_type_id = forms.ChoiceField(label="カメラタイプ", required=False, choices=CAMERA_TYPE_CHOICES)
+    frame_id = forms.ChoiceField(label="センサーサイズ", required=False, choices=FRAME_CHOICES)
+    finder_id = forms.ChoiceField(label="ファインダー", required=False, choices=FINDER_CHOICES)
+    maker_id = forms.ChoiceField(label="メーカー", required=False, choices=MAKER_CHOICES)
 
     class Meta:
         model = Camera
@@ -66,27 +70,18 @@ class SearchForm(ModelForm):
         "name",
         "min_iso",
         "max_iso",
-        "frame",
-        "maker",
-        "finder",
         "min_focus",
         "max_focus",
         "nearest_shot",
         "nearest_shot_with_macro_mode",
         "f_value_wide",
-        "camera_type",
         ]
         labels = {
         "name": "機種名",
         "min_iso": "最小ISO感度",
         "max_iso": "最大ISO感度",
-        "frame": "センサーサイズ",
-        "maker": "メーカー",
-        "finder": "ファインダー",
         "min_focus": "最短焦点距離",
         "max_focus": "最長焦点距離",
-        "camera_type": "カメラタイプ",
-        "nearest_shot": "最短撮影距離"
         }
 
     def __init__(self, *args, **kwargs):
@@ -94,9 +89,6 @@ class SearchForm(ModelForm):
         self.fields["name"].required = False
         self.fields["min_iso"].required = False
         self.fields["max_iso"].required = False
-        self.fields["frame"].required = False
-        self.fields["maker"].required = False
-        self.fields["finder"].required = False
         self.fields["bluetooth"].required = False
         self.fields["min_focus"].required = False
         self.fields["max_focus"].required = False
@@ -104,17 +96,17 @@ class SearchForm(ModelForm):
         self.fields["anti_shake"].required = False
         self.fields["five_axis_anti_shake"].required = False
         self.fields["nearest_shot_with_macro_mode"].required = False
-        self.fields["camera_type"].required = False
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-fields'
 
-    def clean(self):
-        """ForeignKeyFieldは、レコードのidを返すようにする"""
-        if self.cleaned_data.get("camera_type") is not None:
-            self.cleaned_data["camera_type"] = self.cleaned_data["camera_type"].id
-        if self.cleaned_data.get("frame") is not None:
-            self.cleaned_data["frame"] = self.cleaned_data["frame"].id
-        if self.cleaned_data.get("finder") is not None:
-            self.cleaned_data["finder"] = self.cleaned_data["finder"].id
-        if self.cleaned_data.get("maker") is not None:
-            self.cleaned_data["maker"] = self.cleaned_data["maker"].id
+    def clean_camera_type_id(self):
+        return int(self.cleaned_data["camera_type_id"]) if self.cleaned_data["camera_type_id"] else None
+
+    def clean_frame_id(self):
+        return int(self.cleaned_data["frame_id"]) if self.cleaned_data["frame_id"] else None
+
+    def clean_finder_id(self):
+        return int(self.cleaned_data["finder_id"]) if self.cleaned_data["finder_id"] else None
+
+    def clean_maker_id(self):
+        return int(self.cleaned_data["maker_id"]) if self.cleaned_data["maker_id"] else None

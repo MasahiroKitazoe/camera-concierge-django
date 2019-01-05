@@ -18,12 +18,17 @@ def search(request):
         form = SearchForm()
         return render(request, 'camera/search.html', {"form": form})
 
-    form = SearchForm(request.GET)
+    page = request.GET.get("page")
+    # ページ指定の場合、formのパラメータは保存済みセッション変数から受け取る
+    if page:
+        form = SearchForm(request.session.get("form_data"))
+    else:
+        form = SearchForm(request.GET)
     form.is_valid()  # エラーは起きない想定
+    request.session["form_data"] = form.cleaned_data
 
     search_results = CameraSearcher.filter(form.cleaned_data)
     paginator = Paginator(search_results, 10)
-    page = request.GET.get("page")
     cameras = paginator.get_page(page)
     return render(request, 'camera/search.html', {"form": form, "cameras": cameras})
 

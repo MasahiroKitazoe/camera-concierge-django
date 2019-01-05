@@ -2,6 +2,7 @@
 
 {% block content %}
 {% if cameras %}
+    <h2>検索結果</h2>
     {% for camera in cameras %}
         <div class="search_results">
           <div class="row">
@@ -9,6 +10,7 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">{{ forloop.counter }}位</span>
+                  <span class="card-title" style="font-size: 1.5vw;">{{ camera.review_count }}レビュー</span>
                     <a class="camera-link" href="{% url "camera:detail" camera.id %}">
                         <h3>{{ camera.name }}</h3>
                     </a>
@@ -46,10 +48,10 @@
             <p class="collapsible-label">カメラのタイプ</p>
         </div>
         <div class="collapsible-body">
-          {{ form.camera_type.label_tag }}
-          {{ form.camera_type }}
-          {{ form.camera_type.help_text }}
-          {{ form.camera_type.errors }}
+          {{ form.camera_type_id.label_tag }}
+          {{ form.camera_type_id }}
+          {{ form.camera_type_id.help_text }}
+          {{ form.camera_type_id.errors }}
         </div>
       </li>
       <li>
@@ -313,10 +315,10 @@
             <p class="collapsible-label">センサーサイズ</p>
         </div>
         <div class="collapsible-body">
-          {{ form.frame.label_tag }}
-          {{ form.frame }}
-          {{ form.frame.help_text }}
-          {{ form.frame.errors }}
+          {{ form.frame_id.label_tag }}
+          {{ form.frame_id }}
+          {{ form.frame_id.help_text }}
+          {{ form.frame_id.errors }}
         </div>
       </li>
       <li>
@@ -325,10 +327,10 @@
             <p class="collapsible-label">メーカー</p>
         </div>
         <div class="collapsible-body">
-          {{ form.maker.label_tag }}
-          {{ form.maker }}
-          {{ form.maker.help_text }}
-          {{ form.maker.errors }}
+          {{ form.maker_id.label_tag }}
+          {{ form.maker_id }}
+          {{ form.maker_id.help_text }}
+          {{ form.maker_id.errors }}
         </div>
       </li>
       <li>
@@ -337,10 +339,10 @@
             <p class="collapsible-label">ファインダー</p>
         </div>
         <div class="collapsible-body">
-          {{ form.finder.label_tag }}
-          {{ form.finder }}
-          {{ form.finder.help_text }}
-          {{ form.finder.errors }}
+          {{ form.finder_id.label_tag }}
+          {{ form.finder_id }}
+          {{ form.finder_id.help_text }}
+          {{ form.finder_id.errors }}
         </div>
       </li>
       <li>

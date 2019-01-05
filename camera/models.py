@@ -31,6 +31,9 @@ class Finder(models.Model):
     def __str__(self):
         return str(self.__dict__)
 
+    def choice_name(self):
+        return self.finder_type
+
     @classmethod
     def import_csv(cls):
         file_path = "dataset/finders.csv"
@@ -64,6 +67,9 @@ class Maker(models.Model):
 
     def __str__(self):
         return str(self.__dict__)
+
+    def choice_name(self):
+        return self.name
 
     @classmethod
     def import_csv(cls):
@@ -302,6 +308,9 @@ class Camera(models.Model):
                 "super_wide": camera.super_wide,
                 "open_date": camera.open_date(),
                 "camera_type_id": camera.camera_type.id,
+                "amazon_link": camera.amazon_link,
+                "rakuten_link": camera.rakuten_link,
+                "image_url": camera.image_url,
                 "review_count": len(review_counts[camera.id])
             }
         return results

@@ -70,46 +70,46 @@ class CameraSearcher:
         for cam_id, camera_specs in cameras.items():
             match_flag = True  # 検索結果を表すフラグ
 
-            for spec, val in camera_specs.items():
+            for spec_name, spec_val in camera_specs.items():
                 # nameは部分一致でフィルタする
-                if (spec == "name") and (criteria_dict.get("name", None) is not None):
-                    if criteria_dict["name"] not in val:
+                if (spec_name == "name") and (criteria_dict.get("name", None) is not None):
+                    if criteria_dict["name"] not in spec_val:
                         match_flag = False
                         break
                     continue  # 一致していたら、次の検索条件へ
 
                 # フィールド名にmin, maxが入っているfocus(焦点距離)については先に処理する
-                if "focus" in spec and criteria_dict.get(spec, None) is not None:
-                    if spec == "min_focus" and criteria_dict[spec] > val:
+                if "focus" in spec_name and criteria_dict.get(spec_name, None) is not None:
+                    if spec_name == "min_focus" and criteria_dict[spec_name] > spec_val:
                         match_flag = False
                         break
-                    if spec == "max_focus" and criteria_dict[spec] < val:
+                    if spec_name == "max_focus" and criteria_dict[spec_name] < spec_val:
                         match_flag = False
                         break
                     continue  # 一致していたら、次の検索条件へ
 
                 # min, maxで絞る条件でない場合（cameraのbooleanの属性値を想定）
-                criteria_val = criteria_dict.get(spec, None)
+                criteria_val = criteria_dict.get(spec_name, None)
                 if criteria_val is not None and len(str(criteria_val)) != 0:
-                    if val != criteria_val:
+                    if spec_val != criteria_val:
                         match_flag = False
                         break
 
-                min_key = "min_" + spec
-                max_key = "max_" + spec
+                min_key = "min_" + spec_name
+                max_key = "max_" + spec_name
 
                 min_value = criteria_dict.get(min_key, None)
                 max_value = criteria_dict.get(max_key, None)
 
                 # 最小値でフィルタ
                 if min_value:
-                    if val < min_value:
+                    if spec_val < min_value:
                         match_flag = False
                         break
 
                 # 最大値でフィルタ
                 if max_value:
-                    if val > max_value:
+                    if spec_val > max_value:
                         match_flag = False
                         break
 
