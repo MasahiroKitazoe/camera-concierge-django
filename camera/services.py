@@ -117,4 +117,7 @@ class CameraSearcher:
                 continue
 
             results.append(camera_specs)
+
+        # レビュー数降順でカメラをソート
+        results = sorted(results, key=lambda camera: camera["review_count"], reverse=True)
         return results

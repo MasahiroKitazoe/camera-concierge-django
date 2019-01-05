@@ -93,6 +93,21 @@ class Review(models.Model):
             review.camera_id = row[4]
             review.save()
 
+    @classmethod
+    def map_review_counts_of_cameras(cls):
+        mapped_counts = {}
+        reviews = Review.objects.select_related("camera").all()
+        for review in reviews:
+            review_dict = {
+                "id": review.id,
+                "title": review.title,
+                "body": review.body,
+                "url": review.url,
+            }
+            mapped_counts.setdefault(review.camera.id, [])
+            mapped_counts[review.camera.id].append(review_dict)
+        return mapped_counts
+
 
 class Camera(models.Model):
     name = models.CharField(max_length=100)
@@ -240,6 +255,7 @@ class Camera(models.Model):
         :return: カメラのスペック情報が入った辞書を格納した配列
         """
         cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type")
+        review_counts = Review.map_review_counts_of_cameras()
         results = {}
         for camera in cameras:
             results[camera.id] = {
@@ -281,6 +297,7 @@ class Camera(models.Model):
                 "f_value_tele": camera.f_value_tele,
                 "super_wide": camera.super_wide,
                 "open_date": camera.open_date(),
-                "camera_type_id": camera.camera_type.id
+                "camera_type_id": camera.camera_type.id,
+                "review_count": len(review_counts[camera.id])
             }
         return results
