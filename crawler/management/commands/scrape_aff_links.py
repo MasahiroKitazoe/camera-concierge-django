@@ -95,4 +95,3 @@ class Command(BaseCommand):
         else:
             print("正規表現がマッチしませんでした。マッチしなかった文字列: {}".format(aff_tag))
             return "not detected"
-

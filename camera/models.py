@@ -149,6 +149,9 @@ class Camera(models.Model):
     open_year = models.IntegerField()
     open_month = models.IntegerField()
     camera_type = models.ForeignKey("CameraType", on_delete=models.PROTECT)
+    amazon_link = models.TextField()
+    rakuten_link = models.TextField()
+    image_url = models.TextField()
 
     def open_date(self):
         if not self.open_year or not self.open_month:
@@ -192,9 +195,7 @@ class Camera(models.Model):
             return item
 
     @classmethod
-    def import_csv(cls):
-        file_path = "dataset/cameras.csv"
-
+    def import_csv(cls, file_path):
         df = pd.read_csv(file_path, encoding='utf-8')
         for _, row in df.iterrows():
             camera = Camera()
@@ -238,6 +239,9 @@ class Camera(models.Model):
             camera.open_year = camera.assign_item(row[37])
             camera.open_month = camera.assign_item(row[38])
             camera.camera_type_id = camera.assign_item(row[39])
+            camera.amazon_link = camera.assign_item(row[40])
+            camera.rakuten_link = camera.assign_item(row[41])
+            camera.image_url = camera.assign_item(row[42])
 
             camera.save()
 
