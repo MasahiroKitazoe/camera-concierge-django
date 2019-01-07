@@ -80,6 +80,66 @@ class Rank(models.Model):
     camera_type_id = models.IntegerField("camera_type_id", null=True)
     target_keyword = models.CharField("target_keyword", max_length=255, null=True)
 
+    def map_rank(self):
+        rank = {
+            "min_iso": self.min_iso,
+            "max_iso": self.max_iso,
+            "min_focus": self.min_focus,
+            "max_focus": self.max_focus,
+            "min_price": self.min_price,
+            "max_price": self.max_price,
+            "min_pixel": self.min_pixel,
+            "max_pixel": self.max_pixel,
+            "min_continuous_shooting_performance": self.min_continuous_shooting_performance,
+            "max_continuous_shooting_performance": self.max_continuous_shooting_performance,
+            "min_shutter_speed": self.min_shutter_speed,
+            "max_shutter_speed": self.max_shutter_speed,
+            "min_monitor_size": self.min_monitor_size,
+            "max_monitor_size": self.max_monitor_size,
+            "min_monitor_pixel": self.min_monitor_pixel,
+            "max_monitor_pixel": self.max_monitor_pixel,
+            "min_shooting_num": self.min_shooting_num,
+            "max_shooting_num": self.max_shooting_num,
+            "min_weight": self.min_weight,
+            "max_weight": self.max_weight,
+            "min_width": self.min_width,
+            "max_width": self.max_width,
+            "min_height": self.min_height,
+            "max_height": self.max_height,
+            "min_depth": self.min_depth,
+            "max_depth": self.max_depth,
+            "min_f_value_wide": self.min_f_value_wide,
+            "max_f_value_wide": self.max_f_value_wide,
+            # "min_f_value_tele": self.min_f_value_tele,
+            # "max_f_value_tele": self.max_f_value_tele,
+            "min_shooting_num_with_finder": self.min_shooting_num_with_finder,
+            "max_shooting_num_with_finder": self.max_shooting_num_with_finder,
+            "min_zoom": self.min_zoom,
+            "max_zoom": self.max_zoom,
+            "min_nearest_shot": self.min_nearest_shot,
+            "max_nearest_shot": self.max_nearest_shot,
+            "min_nearest_shot_with_macro_mode": self.min_nearest_shot_with_macro_mode,
+            "max_nearest_shot_with_macro_mode": self.max_nearest_shot_with_macro_mode,
+            # "min_open_date": self.oldest_open_month,
+            # "max_open_date": self.max_open_date,
+            "four_k": self.four_k,
+            "wifi": self.wifi,
+            "touch_panel": self.touch_panel,
+            "move_panel": self.move_panel,
+            "bluetooth": self.bluetooth,
+            "selfie": self.selfie,
+            "waterploof": self.waterploof,
+            "gps": self.gps,
+            "anti_shake": self.anti_shake,
+            "five_axis_anti_shake": self.five_axis_anti_shake,
+            "super_wide": self. super_wide,
+            "camera_type_id": self.camera_type_id,
+            "frame_id": self.frame_id,
+            "finder_id": self.finder_id,
+            "maker_id": self.maker_id
+        }
+        return rank
+
     @classmethod
     def import_csv(cls):
         file_path = "dataset/ranking.csv"

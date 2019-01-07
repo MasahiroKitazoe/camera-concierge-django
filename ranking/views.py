@@ -3,6 +3,7 @@ from django.views import generic
 from .models import Rank
 from camera.services import CameraSearcher
 
+
 class IndexView(generic.ListView):
     template_name = "ranking/index.html"
     context_object_name = "ranks"

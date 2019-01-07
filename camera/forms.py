@@ -34,9 +34,9 @@ class SearchForm(ModelForm):
     max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
     min_f_value_tele = forms.ChoiceField(label="テレ端F値(下限)", required=False, choices=F_VALUE)
     max_f_value_tele = forms.ChoiceField(label="テレ端F値(上限)", required=False, choices=F_VALUE)
-    min_shootin_num_with_finder = \
+    min_shooting_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(下限)", required=False)
-    max_shootin_num_with_finder = \
+    max_shooting_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(上限)", required=False)
     min_zoom = forms.IntegerField(label="ズーム(下限)", required=False)
     max_zoom = forms.IntegerField(label="ズーム(上限)", required=False)
@@ -72,9 +72,6 @@ class SearchForm(ModelForm):
         "max_iso",
         "min_focus",
         "max_focus",
-        "nearest_shot",
-        "nearest_shot_with_macro_mode",
-        "f_value_wide",
         ]
         labels = {
         "name": "機種名",
