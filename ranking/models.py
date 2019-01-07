@@ -82,8 +82,8 @@ class Rank(models.Model):
 
     @classmethod
     def import_csv(cls):
-      file_path = "dataset/ranking.csv"
-      import_csv_into_model(file_path, Rank)
+        file_path = "dataset/ranking.csv"
+        import_csv_into_model(file_path, Rank)
 
     @classmethod
     def map_ranks(cls):
@@ -91,79 +91,79 @@ class Rank(models.Model):
         results = {}
         for rank in ranks:
             results[rank.id] = {
-            "title": rank.title,
-            "description": rank.description,
-            "price": {"min": rank.min_price, "max": rank.max_price},
-            "pixel": {"min": rank.min_pixel, "max": rank.max_pixel},
-            "min_iso": rank.min_iso,
-            "max_iso": rank.max_iso,
-            "continuous_shooting_performance": {
-                "min": rank.min_continuous_shooting_performance,
-                "max": rank.max_continuous_shooting_performance
-            },
-            "shutter_speed": {
-                "min": rank.min_shutter_speed,
-                "max": rank.max_shutter_speed
-            },
-            "monitor_size": {
-                "min": rank.min_monitor_size,
-                "max": rank.max_monitor_size
-            },
-            "monitor_pixel": {
-                "min": rank.min_monitor_pixel,
-                "max": rank.max_monitor_pixel
-            },
-            "shooting_num": {
-                "min": rank.min_shooting_num,
-                "max": rank.max_shooting_num
-            },
-            "four_k": rank.four_k,
-            "wifi": rank.wifi,
-            "touch_panel": rank.touch_panel,
-            "move_panel": rank.move_panel,
-            "weight": {"min": rank.min_weight, "max": rank.max_weight},
-            "width": {"min": rank.min_width, "max": rank.max_width},
-            "height": {"min": rank.min_height, "max": rank.max_height},
-            "depth": {"min": rank.min_depth, "max": rank.max_depth},
-            "frame_id": rank.frame_id,
-            "maker_id": rank.maker_id,
-            "finder_id": rank.finder_id,
-            "f_value": {"min": rank.min_f_value, "max": rank.max_f_value},
-            "shooting_num_with_finder": {
-                "min": rank.min_shooting_num,
-                "max": rank.max_shooting_num
-            },
-            "bluetooth": rank.bluetooth,
-            "zoom": {"min": rank.min_zoom, "max": rank.max_zoom},
-            "min_focus": rank.min_focus,
-            "max_focus": rank.max_focus,
-            "selfie": rank.selfie,
-            "waterploof": rank.waterploof,
-            "gps": rank.gps,
-            "nearest_shot": {
-                "min": rank.min_nearest_shot,
-                "max": rank.max_nearest_shot
-            },
-            "anti_shake": rank.anti_shake,
-            "five_axis_anti_shake": rank.five_axis_anti_shake,
-            "nearest_shot_with_macro_mode": {
-                "min": rank.min_nearest_shot_with_macro_mode,
-                "max": rank.max_nearest_shot_with_macro_mode
-            },
-            "f_value_wide": {
-                "min": rank.min_f_value_wide,
-                "max": rank.max_f_value_wide
-            },
-            "super_wide": rank.super_wide,
-            "open_year": {
-                "min": rank.oldest_open_year,
-                "max": rank.newest_open_year
-            },
-            "open_month": {
-                "min": rank.oldest_open_month,
-                "max": rank.newest_open_month
-            },
-            "camera_type_id": rank.camera_type_id,
-            "target_keyword": rank.target_keyword,
+                "title": rank.title,
+                "description": rank.description,
+                "price": {"min": rank.min_price, "max": rank.max_price},
+                "pixel": {"min": rank.min_pixel, "max": rank.max_pixel},
+                "min_iso": rank.min_iso,
+                "max_iso": rank.max_iso,
+                "continuous_shooting_performance": {
+                    "min": rank.min_continuous_shooting_performance,
+                    "max": rank.max_continuous_shooting_performance
+                },
+                "shutter_speed": {
+                    "min": rank.min_shutter_speed,
+                    "max": rank.max_shutter_speed
+                },
+                "monitor_size": {
+                    "min": rank.min_monitor_size,
+                    "max": rank.max_monitor_size
+                },
+                "monitor_pixel": {
+                    "min": rank.min_monitor_pixel,
+                    "max": rank.max_monitor_pixel
+                },
+                "shooting_num": {
+                    "min": rank.min_shooting_num,
+                    "max": rank.max_shooting_num
+                },
+                "four_k": rank.four_k,
+                "wifi": rank.wifi,
+                "touch_panel": rank.touch_panel,
+                "move_panel": rank.move_panel,
+                "weight": {"min": rank.min_weight, "max": rank.max_weight},
+                "width": {"min": rank.min_width, "max": rank.max_width},
+                "height": {"min": rank.min_height, "max": rank.max_height},
+                "depth": {"min": rank.min_depth, "max": rank.max_depth},
+                "frame_id": rank.frame_id,
+                "maker_id": rank.maker_id,
+                "finder_id": rank.finder_id,
+                "f_value": {"min": rank.min_f_value, "max": rank.max_f_value},
+                "shooting_num_with_finder": {
+                    "min": rank.min_shooting_num,
+                    "max": rank.max_shooting_num
+                },
+                "bluetooth": rank.bluetooth,
+                "zoom": {"min": rank.min_zoom, "max": rank.max_zoom},
+                "min_focus": rank.min_focus,
+                "max_focus": rank.max_focus,
+                "selfie": rank.selfie,
+                "waterploof": rank.waterploof,
+                "gps": rank.gps,
+                "nearest_shot": {
+                    "min": rank.min_nearest_shot,
+                    "max": rank.max_nearest_shot
+                },
+                "anti_shake": rank.anti_shake,
+                "five_axis_anti_shake": rank.five_axis_anti_shake,
+                "nearest_shot_with_macro_mode": {
+                    "min": rank.min_nearest_shot_with_macro_mode,
+                    "max": rank.max_nearest_shot_with_macro_mode
+                },
+                "f_value_wide": {
+                    "min": rank.min_f_value_wide,
+                    "max": rank.max_f_value_wide
+                },
+                "super_wide": rank.super_wide,
+                "open_year": {
+                    "min": rank.oldest_open_year,
+                    "max": rank.newest_open_year
+                },
+                "open_month": {
+                    "min": rank.oldest_open_month,
+                    "max": rank.newest_open_month
+                },
+                "camera_type_id": rank.camera_type_id,
+                "target_keyword": rank.target_keyword,
             }
         return results
