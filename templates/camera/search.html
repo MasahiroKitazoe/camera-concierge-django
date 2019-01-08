@@ -484,10 +484,15 @@
             <p class="collapsible-label">最短撮影距離</p>
         </div>
         <div class="collapsible-body">
-          {{ form.nearest_shot.label_tag }}
-          {{ form.nearest_shot }}
-          {{ form.nearest_shot.help_text }}
-          {{ form.nearest_shot.errors }}
+          {{ form.min_nearest_shot.label_tag }}
+          {{ form.min_nearest_shot }}
+          {{ form.min_nearest_shot.help_text }}
+          {{ form.min_nearest_shot.errors }}
+
+          {{ form.max_nearest_shot.label_tag }}
+          {{ form.max_nearest_shot }}
+          {{ form.max_nearest_shot.help_text }}
+          {{ form.max_nearest_shot.errors }}
         </div>
       </li>
       <li>

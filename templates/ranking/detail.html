@@ -3,10 +3,33 @@
 {% load static %}
 
 {% block content %}
-  <h2 id="i1">this is a h2 sample</h2>
-  <h3>this is a h3 sample</h3>
-  <h2 id="i2">this is a h2 sample</h2>
-  <h3>this is a h3 sample</h3>
-  <h2 id="i3">this is a h2 sample</h2>
-  <h3>this is a h3 sample</h3>
+<div class="wrap">
+    <div id="main" class="col-md-8" role="main" itemscope="itemscope" itemtype="http://schema.org/Blog">
+        <div class="main-inner">
+
+          <header class="detail-header">
+            <h1>{{ rank.title }}</h1>
+          </header>
+
+          <div id="toc_container" class="no_bullets">
+            <p class="toc_title">目次</p>
+            <ul class="toc_list">
+                {% for camera in cameras %}
+                    <li><a href="#i{{ forloop.counter }}">{{ camera.name }}</a></li>
+                {% endfor %}
+            </ul>
+          </div>
+
+          <section class="detail-content" itemprop="text">
+            {{ cameras|length }}
+            {% for camera in cameras %}
+                <a href="{% url "camera:detail" camera.id %}">
+                    <h2 id="#i{{ forloop.counter }}">camera.name</h2>
+                </a>
+            {% endfor %}
+          </section>
+
+        </div>
+    </div>
+</div>
 {% endblock %}

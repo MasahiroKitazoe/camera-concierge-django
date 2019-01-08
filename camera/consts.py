@@ -81,7 +81,7 @@ F_VALUE = (
     (32, "32"),
 )
 
-BOOLEAN = ((None, "--------"), (True, "○"), (False, "なし"))
+BOOLEAN = ((None, "--------"), (True, "○"), ("", "なし"))
 
 CAMERA_TYPE_CHOICES = (
     (None, "--------"),
