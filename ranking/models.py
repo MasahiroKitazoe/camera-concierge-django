@@ -1,10 +1,8 @@
+import pandas as pd
 from django.db import models
 
-from camera.models import Frame
-from camera.models import Finder
-from camera.models import Maker
-from camera.models import CameraType
-from ranking.data_import import import_csv_into_model
+from camera.models import CameraType, Finder, Frame, Maker
+from ranking.utils import assign_item
 
 
 class Rank(models.Model):
@@ -45,8 +43,8 @@ class Rank(models.Model):
     frame_id = models.IntegerField("frame_id", null=True)
     maker_id = models.IntegerField("maker_id", null=True)
     finder_id = models.IntegerField("finder_id", null=True)
-    min_f_value = models.FloatField("f_value", null=True)
-    max_f_value = models.FloatField("f_value", null=True)
+    min_f_value_tele = models.FloatField("f_value", null=True)
+    max_f_value_tele = models.FloatField("f_value", null=True)
     min_shooting_num_with_finder = \
                 models.IntegerField("num_of_shooting_with_finder", null=True)
     max_shooting_num_with_finder = \
@@ -79,6 +77,8 @@ class Rank(models.Model):
     newest_open_month = models.IntegerField("newest_open_month", null=True)
     camera_type_id = models.IntegerField("camera_type_id", null=True)
     target_keyword = models.CharField("target_keyword", max_length=255, null=True)
+    created_at = models.DateTimeField("created_at", null=True)
+    updated_at = models.DateTimeField("updated_at", null=True)
 
     def map_rank(self):
         rank = {
@@ -141,9 +141,75 @@ class Rank(models.Model):
         return rank
 
     @classmethod
-    def import_csv(cls):
-        file_path = "dataset/ranking.csv"
-        import_csv_into_model(file_path, Rank)
+    def import_csv(cls, file_path):
+        df = pd.read_csv(file_path, encoding="utf-8")
+        for _, row in df.iterrows():
+            rank = Rank()
+
+            rank.title = assign_item(row[1])
+            rank.description = assign_item(row[2])
+            rank.min_price = assign_item(row[3])
+            rank.max_price = assign_item(row[4])
+            rank.min_pixel = assign_item(row[5])
+            rank.max_pixel = assign_item(row[6])
+            rank.min_iso = assign_item(row[7])
+            rank.max_iso = assign_item(row[8])
+            rank.min_continuous_shooting_performance = assign_item(row[9])
+            rank.max_continuous_shooting_performance = assign_item(row[10])
+            rank.min_shutter_speed = assign_item(row[11])
+            rank.max_shutter_speed = assign_item(row[12])
+            rank.min_monitor_size = assign_item(row[13])
+            rank.max_monitor_size = assign_item(row[14])
+            rank.min_monitor_pixel = assign_item(row[15])
+            rank.max_monitor_pixel = assign_item(row[15])
+            rank.min_shooting_num = assign_item(row[16])
+            rank.max_shooting_num = assign_item(row[17])
+            rank.four_k = assign_item(row[18])
+            rank.wifi = assign_item(row[19])
+            rank.touch_panel = assign_item(row[20])
+            rank.move_panel = assign_item(row[21])
+            rank.min_weight = assign_item(row[22])
+            rank.max_weight = assign_item(row[23])
+            rank.min_width = assign_item(row[24])
+            rank.max_width = assign_item(row[25])
+            rank.min_height = assign_item(row[26])
+            rank.max_height = assign_item(row[27])
+            rank.min_depth = assign_item(row[28])
+            rank.max_depth = assign_item(row[29])
+            rank.frame_id = assign_item(row[30])
+            rank.maker_id = assign_item(row[31])
+            rank.finder_id = assign_item(row[32])
+            rank.min_f_value_tele = assign_item(row[33])
+            rank.max_f_value_tele = assign_item(row[34])
+            rank.min_shooting_num_with_finder = assign_item(row[35])
+            rank.max_shooting_num_with_finder = assign_item(row[36])
+            rank.bluetooth = assign_item(row[37])
+            rank.min_zoom = assign_item(row[38])
+            rank.max_zoom = assign_item(row[39])
+            rank.min_focus = assign_item(row[40])
+            rank.max_focus = assign_item(row[41])
+            rank.selfie = assign_item(row[42])
+            rank.waterploof = assign_item(row[43])
+            rank.min_water_depth = assign_item(row[44])
+            rank.max_water_depth = assign_item(row[45])
+            rank.gps = assign_item(row[46])
+            rank.min_nearest_shot = assign_item(row[47])
+            rank.max_nearest_shot = assign_item(row[48])
+            rank.anti_shake = assign_item(row[49])
+            rank.five_axis_anti_shake = assign_item(row[50])
+            rank.min_nearest_shot_with_macro_mode = assign_item(row[51])
+            rank.max_nearest_shot_with_macro_mode = assign_item(row[52])
+            rank.min_f_value_wide = assign_item(row[53])
+            rank.max_f_value_wide = assign_item(row[54])
+            rank.super_wide = assign_item(row[55])
+            rank.oldest_open_year = assign_item(row[56])
+            rank.newest_open_year = assign_item(row[57])
+            rank.oldest_open_month = assign_item(row[58])
+            rank.newest_open_month = assign_item(row[59])
+            rank.camera_type_id = assign_item(row[60])
+            rank.target_keyword = assign_item(row[61])
+            rank.created_at = assign_item(row[62])
+            rank.updated_at = assign_item(row[63])
 
     @classmethod
     def map_ranks(cls):
