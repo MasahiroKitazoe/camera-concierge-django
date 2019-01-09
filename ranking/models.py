@@ -52,8 +52,8 @@ class Rank(models.Model):
     bluetooth = models.BooleanField("bluetooth", null=True)
     min_zoom = models.FloatField("zoom", null=True)
     max_zoom = models.FloatField("zoom", null=True)
-    min_focus = models.IntegerField("focus", null=True)
-    max_focus = models.IntegerField("focus", null=True)
+    min_focus = models.IntegerField("min_focus", null=True)
+    max_focus = models.IntegerField("max_focus", null=True)
     selfie = models.BooleanField("selfie", null=True)
     waterploof = models.BooleanField("waterploof", null=True)
     min_water_depth = models.IntegerField("water_depth", null=True)
@@ -71,10 +71,8 @@ class Rank(models.Model):
     min_f_value_wide = models.FloatField("f_value_wide", null=True)
     max_f_value_wide = models.FloatField("f_value_wide", null=True)
     super_wide = models.BooleanField("super_wide", null=True)
-    oldest_open_year = models.IntegerField("oldest_open_year", null=True)
-    newest_open_year = models.IntegerField("newest_open_year", null=True)
-    oldest_open_month = models.IntegerField("oldest_open_month", null=True)
-    newest_open_month = models.IntegerField("newest_open_month", null=True)
+    min_open_date = models.DateField("min_open_date", null=True)
+    max_open_date = models.DateField("max_open_date", null=True)
     camera_type_id = models.IntegerField("camera_type_id", null=True)
     target_keyword = models.CharField("target_keyword", max_length=255, null=True)
     created_at = models.DateTimeField("created_at", null=True)
@@ -84,8 +82,6 @@ class Rank(models.Model):
         rank = {
             "min_iso": self.min_iso,
             "max_iso": self.max_iso,
-            "min_focus": self.min_focus,
-            "max_focus": self.max_focus,
             "min_price": self.min_price,
             "max_price": self.max_price,
             "min_pixel": self.min_pixel,
@@ -110,18 +106,20 @@ class Rank(models.Model):
             "max_depth": self.max_depth,
             "min_f_value_wide": self.min_f_value_wide,
             "max_f_value_wide": self.max_f_value_wide,
-            # "min_f_value_tele": self.min_f_value_tele,
-            # "max_f_value_tele": self.max_f_value_tele,
+            "min_f_value_tele": self.min_f_value_tele,
+            "max_f_value_tele": self.max_f_value_tele,
             "min_shooting_num_with_finder": self.min_shooting_num_with_finder,
             "max_shooting_num_with_finder": self.max_shooting_num_with_finder,
             "min_zoom": self.min_zoom,
             "max_zoom": self.max_zoom,
+            "min_focus": self.min_focus,
+            "max_focus": self.max_focus,
             "min_nearest_shot": self.min_nearest_shot,
             "max_nearest_shot": self.max_nearest_shot,
             "min_nearest_shot_with_macro_mode": self.min_nearest_shot_with_macro_mode,
             "max_nearest_shot_with_macro_mode": self.max_nearest_shot_with_macro_mode,
-            # "min_open_date": self.oldest_open_month,
-            # "max_open_date": self.max_open_date,
+            "min_open_date": self.min_open_date,
+            "max_open_date": self.max_open_date,
             "four_k": self.four_k,
             "wifi": self.wifi,
             "touch_panel": self.touch_panel,
@@ -161,55 +159,55 @@ class Rank(models.Model):
             rank.min_monitor_size = assign_item(row[13])
             rank.max_monitor_size = assign_item(row[14])
             rank.min_monitor_pixel = assign_item(row[15])
-            rank.max_monitor_pixel = assign_item(row[15])
-            rank.min_shooting_num = assign_item(row[16])
-            rank.max_shooting_num = assign_item(row[17])
-            rank.four_k = assign_item(row[18])
-            rank.wifi = assign_item(row[19])
-            rank.touch_panel = assign_item(row[20])
-            rank.move_panel = assign_item(row[21])
-            rank.min_weight = assign_item(row[22])
-            rank.max_weight = assign_item(row[23])
-            rank.min_width = assign_item(row[24])
-            rank.max_width = assign_item(row[25])
-            rank.min_height = assign_item(row[26])
-            rank.max_height = assign_item(row[27])
-            rank.min_depth = assign_item(row[28])
-            rank.max_depth = assign_item(row[29])
-            rank.frame_id = assign_item(row[30])
-            rank.maker_id = assign_item(row[31])
-            rank.finder_id = assign_item(row[32])
-            rank.min_f_value_tele = assign_item(row[33])
-            rank.max_f_value_tele = assign_item(row[34])
-            rank.min_shooting_num_with_finder = assign_item(row[35])
-            rank.max_shooting_num_with_finder = assign_item(row[36])
-            rank.bluetooth = assign_item(row[37])
-            rank.min_zoom = assign_item(row[38])
-            rank.max_zoom = assign_item(row[39])
-            rank.min_focus = assign_item(row[40])
-            rank.max_focus = assign_item(row[41])
-            rank.selfie = assign_item(row[42])
-            rank.waterploof = assign_item(row[43])
-            rank.min_water_depth = assign_item(row[44])
-            rank.max_water_depth = assign_item(row[45])
-            rank.gps = assign_item(row[46])
-            rank.min_nearest_shot = assign_item(row[47])
-            rank.max_nearest_shot = assign_item(row[48])
-            rank.anti_shake = assign_item(row[49])
-            rank.five_axis_anti_shake = assign_item(row[50])
-            rank.min_nearest_shot_with_macro_mode = assign_item(row[51])
-            rank.max_nearest_shot_with_macro_mode = assign_item(row[52])
-            rank.min_f_value_wide = assign_item(row[53])
-            rank.max_f_value_wide = assign_item(row[54])
-            rank.super_wide = assign_item(row[55])
-            rank.oldest_open_year = assign_item(row[56])
-            rank.newest_open_year = assign_item(row[57])
-            rank.oldest_open_month = assign_item(row[58])
-            rank.newest_open_month = assign_item(row[59])
-            rank.camera_type_id = assign_item(row[60])
-            rank.target_keyword = assign_item(row[61])
-            rank.created_at = assign_item(row[62])
-            rank.updated_at = assign_item(row[63])
+            rank.max_monitor_pixel = assign_item(row[16])
+            rank.min_shooting_num = assign_item(row[17])
+            rank.max_shooting_num = assign_item(row[18])
+            rank.four_k = assign_item(row[19])
+            rank.wifi = assign_item(row[20])
+            rank.touch_panel = assign_item(row[21])
+            rank.move_panel = assign_item(row[22])
+            rank.min_weight = assign_item(row[23])
+            rank.max_weight = assign_item(row[24])
+            rank.min_width = assign_item(row[25])
+            rank.max_width = assign_item(row[26])
+            rank.min_height = assign_item(row[27])
+            rank.max_height = assign_item(row[28])
+            rank.min_depth = assign_item(row[29])
+            rank.max_depth = assign_item(row[30])
+            rank.frame_id = assign_item(row[31])
+            rank.maker_id = assign_item(row[32])
+            rank.finder_id = assign_item(row[33])
+            rank.min_f_value_tele = assign_item(row[34])
+            rank.max_f_value_tele = assign_item(row[35])
+            rank.min_shooting_num_with_finder = assign_item(row[36])
+            rank.max_shooting_num_with_finder = assign_item(row[37])
+            rank.bluetooth = assign_item(row[38])
+            rank.min_zoom = assign_item(row[39])
+            rank.max_zoom = assign_item(row[40])
+            rank.min_focus = assign_item(row[41])
+            rank.max_focus = assign_item(row[42])
+            rank.selfie = assign_item(row[43])
+            rank.waterploof = assign_item(row[44])
+            rank.min_water_depth = assign_item(row[45])
+            rank.max_water_depth = assign_item(row[46])
+            rank.gps = assign_item(row[47])
+            rank.min_nearest_shot = assign_item(row[48])
+            rank.max_nearest_shot = assign_item(row[49])
+            rank.anti_shake = assign_item(row[50])
+            rank.five_axis_anti_shake = assign_item(row[51])
+            rank.min_nearest_shot_with_macro_mode = assign_item(row[52])
+            rank.max_nearest_shot_with_macro_mode = assign_item(row[53])
+            rank.min_f_value_wide = assign_item(row[54])
+            rank.max_f_value_wide = assign_item(row[55])
+            rank.super_wide = assign_item(row[56])
+            rank.min_open_date = assign_item(row[57])
+            rank.max_open_date = assign_item(row[58])
+            rank.camera_type_id = assign_item(row[59])
+            rank.target_keyword = assign_item(row[60])
+            rank.created_at = assign_item(row[61])
+            rank.updated_at = assign_item(row[62])
+
+            rank.save()
 
     @classmethod
     def map_ranks(cls):

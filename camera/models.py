@@ -291,8 +291,17 @@ class Camera(models.Model):
                 "height": camera.height,
                 "depth": camera.depth,
                 "frame_id": camera.frame.id,
+                "frame": {
+                    "frame_type": camera.frame.frame_type
+                },
                 "maker_id": camera.maker.id,
+                "maker": {
+                    "name": camera.maker.name
+                },
                 "finder_id": camera.finder.id,
+                "finder": {
+                    "finder_type": camera.finder.finder_type
+                },
                 "f_value_wide": camera.f_value_wide,
                 "shooting_num_with_finder": camera.shooting_num_with_finder,
                 "bluetooth": camera.bluetooth_mounted(),
@@ -310,6 +319,9 @@ class Camera(models.Model):
                 "super_wide": camera.super_wide,
                 "open_date": camera.open_date(),
                 "camera_type_id": camera.camera_type.id,
+                "camera_type": {
+                    "cam_type": camera.camera_type.cam_type
+                },
                 "amazon_link": camera.amazon_link,
                 "rakuten_link": camera.rakuten_link,
                 "image_url": camera.image_url,

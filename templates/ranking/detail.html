@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="wrap">
-    <div id="main" class="col-md-8" role="main" itemscope="itemscope" itemtype="http://schema.org/Blog">
+    <div id="main" class="col-md-12" role="main" itemscope="itemscope" itemtype="http://schema.org/Blog">
         <div class="main-inner">
 
           <header class="detail-header">
@@ -12,20 +12,66 @@
           </header>
 
           <div id="toc_container" class="no_bullets">
-            <p class="toc_title">目次</p>
             <ul class="toc_list">
+                <p class="toc_title">目次</p>
                 {% for camera in cameras %}
-                    <li><a href="#i{{ forloop.counter }}">{{ camera.name }}</a></li>
+                    <li class="toc_item"><a href="#i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</a></li>
                 {% endfor %}
             </ul>
           </div>
 
           <section class="detail-content" itemprop="text">
-            {{ cameras|length }}
             {% for camera in cameras %}
                 <a href="{% url "camera:detail" camera.id %}">
-                    <h2 id="#i{{ forloop.counter }}">camera.name</h2>
+                    <h2 id="#i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</h2>
                 </a>
+                <div class="camera-info">
+                    <div class="row">
+                        <div class="col-sm-6" class="camera-img-container">
+                            <div class="camera-info-left">
+                                <a href="{{ camera.amazon_link }}" target="_blank">
+                                    <img src="{{ camera.image_url }}">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="camera-info-right">
+                                <li>参考価格: {{ camera.price }}円</li>
+                                <li>種類: {{ camera.camera_type.cam_type }}</li>
+                                <li>センサーサイズ: {{ camera.frame.frame_type }}</li>
+                                <li>有効画素数: {{ camera.pixel }}万画素</li>
+                                <li>WiFi: {% if camera.wifi %}○{% else %}×{% endif %}</li>
+                                <li>自撮り: {% if camera.selfie %}○{% else %}×{% endif %}</li>
+                                <li>発売日: {{ camera.open_date|date:"Y年m月d日" }}</li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ranking-ec-links">
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col s12 m6">
+                          <a href="{{ camera.amazon_link }}" class="ec-buttons" target="_blank">
+                              <div class="card amber" id="amazon-button-card">
+                                <div class="card-content white-text" id="amazon-button">
+                                  <span class="card-title" id="amazon-button-title"><i class="fab fa-amazon"></i>Amazonで見る</span>
+                                </div>
+                              </div>
+                          </a>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 5px;">
+                        <div class="col s12 m6">
+                          <a href="{{ camera.rakuten_link }}" class="ec-buttons" target="_blank">
+                              <div class="card deep-orange darken-2" id="rakuten-button-card">
+                                <div class="card-content white-text" id="rakuten-button">
+                                  <span class="card-title" id="amazon-button-title"><i class="fas fa-shopping-cart"></i>楽天で見る</span>
+                                </div>
+                              </div>
+                          </a>
+                        </div>
+                    </div>
+                </div>
+                {% include "camera/spec_detail.html" %}
             {% endfor %}
           </section>
 
