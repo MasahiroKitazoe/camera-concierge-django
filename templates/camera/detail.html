@@ -16,6 +16,9 @@
                     <li>参考価格: {{ camera.price }}円</li>
                     <li>種類: {{ camera.camera_type.cam_type }}</li>
                     <li>センサーサイズ: {{ camera.frame.frame_type }}</li>
+                    <li>有効画素数: {{ camera.pixel }}万画素</li>
+                    <li>WiFi転送: {% if camera.wifi %}○{% else %}×{% endif %}</li>
+                    <li>自撮り: {% if camera.selfie %}○{% else %}×{% endif %}</li>
                     <li>発売日: {{ camera.open_date|date:"Y年m月d日" }}</li>
                 </div>
             </div>
