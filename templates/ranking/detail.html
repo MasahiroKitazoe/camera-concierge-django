@@ -20,6 +20,20 @@
             </ul>
           </div>
 
+          <h3>ランキング算出基準</h3>
+        　<div class="ranking-switch">
+              <div class="row">
+                  <div class="col-md-6" style="margin: auto;">
+                      <a>
+                          <button class="btn">レビュー数順</button>
+                      </a>
+                      <a>
+                          <button class="btn">インスタグラムハッシュタグ数順</button>
+                      </a>
+                  </div>
+              </div>
+          </div>
+
           <section class="detail-content" itemprop="text">
             {% for camera in cameras %}
                 <a href="{% url "camera:detail" camera.id %}">
