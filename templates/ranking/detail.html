@@ -10,7 +10,7 @@
           <header class="detail-header">
             <h1>{{ rank.title }}</h1>
           </header>
-z
+
           <div id="toc_container" class="no_bullets">
             <ul class="toc_list">
                 <p class="toc_title">目次</p>
@@ -32,8 +32,8 @@ z
                       <a href="{% url "ranking:detail" rank.id "hashtag" %}" class="rank-switch">
                           <button class="btn">インスタハッシュタグ数順</button>
                       </a>
-                      <a href="{% url "ranking:detail" rank.id "hashtag" %}" class="rank-switch">
-                          <button class="btn">インスタハッシュタグ上昇率順</button>
+                      <a href="{% url "ranking:detail" rank.id "hashtag_increase" %}" class="rank-switch">
+                          <button class="btn">インスタハッシュタグ上昇数順</button>
                       </a>
                   </div>
               </div>
@@ -57,8 +57,10 @@ z
                             <div class="camera-info-right">
                                 {% if sort_type == "review" %}
                                     <li>レビュー数: {{ camera.review_count }}</li>
-                                {% else %}
+                                {% elif sort_type == "hashtag" %}
                                     <li>インスタハッシュタグ数: {{ camera.hashtag_count }}</li>
+                                {% else %}
+                                    <li>インスタハッシュタグ上昇数: {{ camera.hashtag_increase_count }}</li>
                                 {% endif %}
                                 <li>参考価格: {{ camera.price }}円</li>
                                 <li>種類: {{ camera.camera_type.cam_type }}</li>
@@ -96,6 +98,24 @@ z
                     </div>
                 </div>
                 {% include "camera/spec_detail.html" %}
+                <ul class="collapsible">
+                  <li>
+                    <div class="collapsible-header">
+                      <i class="fas fa-angle-down"></i>
+                      <p class="collapsible-label">{{ camera.name }}のレビュー</p>
+                    </div>
+                    <div class="collapsible-body">
+                      {% for review in camera.reviews %}
+                          {% include "common/review_card.html" %}
+                      {% endfor %}
+                      <div class="row">
+                          <a href="{% url "camera:detail" camera.id %}" style="margin: auto;">
+                              <button class="btn">他のレビューも見る</button>
+                          </a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
             {% endfor %}
 
                 <div class="ec-ranking">

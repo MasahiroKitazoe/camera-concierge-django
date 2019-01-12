@@ -1,5 +1,6 @@
 from .models import Camera
 from ranking.models import Rank
+from camera.models import Review
 
 
 class CameraSearcher:
@@ -21,6 +22,12 @@ class CameraSearcher:
             return sorted(results, key=lambda camera: camera["review_count"], reverse=True)
         sort_type = self.sort_type + "_count"
         return sorted(results, key=lambda camera: camera[sort_type], reverse=True)
+
+    def add_reviews_to_results(self, cameras):
+        reviews = Review.map_reviews_by_camera_id()
+        for camera in cameras:
+            camera["reviews"] = reviews[camera["id"]][:10]
+        return cameras
 
     def filter(self, criteria_dict):
         """
@@ -81,6 +88,9 @@ class CameraSearcher:
                 continue
 
             results.append(camera_specs)
+
+        # カメラにレビューを紐付ける
+        results = self.add_reviews_to_results(results)
 
         # レビュー数降順でカメラをソート
         return self.sort_filter_results(results)

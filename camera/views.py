@@ -36,8 +36,13 @@ def search(request):
     search_results = CameraSearcher(sort_type=sort_type).filter(form.cleaned_data)
     paginator = Paginator(search_results, 10)
     cameras = paginator.get_page(page)
-    print(rank_ten_position)
-    return render(request, 'camera/search.html', {"form": form, "cameras": cameras, "rank_ten_position": rank_ten_position})
+    data = {
+        "form": form,
+        "cameras": cameras,
+        "rank_ten_position": rank_ten_position,
+        "sort_type": sort_type
+    }
+    return render(request, 'camera/search.html', data)
 
 
 @require_http_methods(["GET"])
