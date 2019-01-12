@@ -3,7 +3,7 @@ from ranking.models import Rank
 
 
 class CameraSearcher:
-    def __init__(self, rank_id=None, sort_type="review"):
+    def __init__(self, rank_id=None, sort_type=None):
         self.rank_id = rank_id
         self.sort_type = sort_type
         if self.rank_id is not None:
@@ -17,6 +17,8 @@ class CameraSearcher:
         return self.filter(self.rank_criteria)
 
     def sort_filter_results(self, results):
+        if self.sort_type is None:
+            return sorted(results, key=lambda camera: camera["review_count"], reverse=True)
         sort_type = self.sort_type + "_count"
         return sorted(results, key=lambda camera: camera[sort_type], reverse=True)
 

@@ -10,12 +10,12 @@
           <header class="detail-header">
             <h1>{{ rank.title }}</h1>
           </header>
-
+z
           <div id="toc_container" class="no_bullets">
             <ul class="toc_list">
                 <p class="toc_title">目次</p>
                 {% for camera in cameras %}
-                    <li class="toc_item"><a href="#i{{ forloop.counter }}">{{ rank_ten_position }}{{ forloop.counter }}位 {{ camera.name }}</a></li>
+                    <li class="toc_item"><a href="#i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</a></li>
                 {% endfor %}
                 <li class="toc_item"><a href="#i11">Amazonや楽天の人気ランキングを見る</a></li>
                 <li class="toc_item"><a href="#i12">ランキングをカスタマイズする</a></li>

@@ -327,6 +327,6 @@ class Camera(models.Model):
                 "image_url": camera.image_url,
                 "review_count": len(review_counts[camera.id]),
                 "hashtag_count": 100,
-                "hashtag_diffs_week_count": 10
+                "hashtag_increase_count": 10
             }
         return results
