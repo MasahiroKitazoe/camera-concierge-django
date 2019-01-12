@@ -6,14 +6,15 @@ class CameraSearcher:
     def __init__(self, rank_id=None, sort_type="review"):
         self.rank_id = rank_id
         self.sort_type = sort_type
+        if self.rank_id is not None:
+            self.rank_criteria = Rank.objects.get(pk=self.rank_id).map_rank()
 
     def filter_cameras_by_ranking(self):
         """
         引数rank_idで与えられたidのrankが指定する条件に合った
         cameraを抜き出して辞書型のデータをを要素とする配列にして返す
         """
-        rank_criteria = Rank.objects.get(pk=self.rank_id).map_rank()
-        return self.filter(rank_criteria)
+        return self.filter(self.rank_criteria)
 
     def sort_filter_results(self, results):
         sort_type = self.sort_type + "_count"
