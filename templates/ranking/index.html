@@ -8,7 +8,7 @@
     {% for rank in ranks %}
         <div class="card">
           <div class="card-body">
-              <a href="{% url "ranking:detail" rank.id %}" id="ranking-title-link" style="text-decoration: none; color: inherit;">
+              <a href="{% url "ranking:detail" rank.id "review" %}" id="ranking-title-link" style="text-decoration: none; color: inherit;">
                   <h2 class="ranking-title">{{ rank.title }}</h2>
               </a>
               <p>{{ rank.description }}</p>

@@ -82,3 +82,7 @@ nav ul a{
   padding-left: 1em;
   font-size: 2.3em
 }
+
+.rank-switch:hover{
+  text-decoration: none;
+}

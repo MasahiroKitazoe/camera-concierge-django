@@ -325,6 +325,8 @@ class Camera(models.Model):
                 "amazon_link": camera.amazon_link,
                 "rakuten_link": camera.rakuten_link,
                 "image_url": camera.image_url,
-                "review_count": len(review_counts[camera.id])
+                "review_count": len(review_counts[camera.id]),
+                "hashtag_count": 100,
+                "hashtag_diffs_week_count": 10
             }
         return results

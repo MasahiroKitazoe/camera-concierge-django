@@ -3,8 +3,9 @@ from ranking.models import Rank
 
 
 class CameraSearcher:
-    def __init__(self, rank_id=None):
+    def __init__(self, rank_id=None, sort_type="review"):
         self.rank_id = rank_id
+        self.sort_type = sort_type
 
     def filter_cameras_by_ranking(self):
         """
@@ -12,10 +13,13 @@ class CameraSearcher:
         cameraを抜き出して辞書型のデータをを要素とする配列にして返す
         """
         rank_criteria = Rank.objects.get(pk=self.rank_id).map_rank()
-        return CameraSearcher.filter(rank_criteria)
+        return self.filter(rank_criteria)
 
-    @classmethod
-    def filter(cls, criteria_dict):
+    def sort_filter_results(self, results):
+        sort_type = self.sort_type + "_count"
+        return sorted(results, key=lambda camera: camera[sort_type], reverse=True)
+
+    def filter(self, criteria_dict):
         """
         引数criteria_dictに格納されたcameraの検索条件を元に、
         該当のcameraを抜き出して配列で返す。
@@ -76,5 +80,4 @@ class CameraSearcher:
             results.append(camera_specs)
 
         # レビュー数降順でカメラをソート
-        results = sorted(results, key=lambda camera: camera["review_count"], reverse=True)
-        return results
+        return self.sort_filter_results(results)
