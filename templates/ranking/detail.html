@@ -15,20 +15,25 @@
             <ul class="toc_list">
                 <p class="toc_title">目次</p>
                 {% for camera in cameras %}
-                    <li class="toc_item"><a href="#i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</a></li>
+                    <li class="toc_item"><a href="#i{{ forloop.counter }}">{{ rank_ten_position }}{{ forloop.counter }}位 {{ camera.name }}</a></li>
                 {% endfor %}
+                <li class="toc_item"><a href="#i11">Amazonや楽天の人気ランキングを見る</a></li>
+                <li class="toc_item"><a href="#i12">ランキングをカスタマイズする</a></li>
             </ul>
           </div>
 
           <h3>ランキング算出基準を変更する</h3>
         　<div class="ranking-switch">
               <div class="row">
-                  <div class="col-md-6" style="margin: auto;">
+                  <div style="margin: auto;">
                       <a href="{% url "ranking:detail" rank.id "review" %}" class="rank-switch">
                           <button class="btn">レビュー数順</button>
                       </a>
                       <a href="{% url "ranking:detail" rank.id "hashtag" %}" class="rank-switch">
-                          <button class="btn">インスタグラムハッシュタグ数順</button>
+                          <button class="btn">インスタハッシュタグ数順</button>
+                      </a>
+                      <a href="{% url "ranking:detail" rank.id "hashtag" %}" class="rank-switch">
+                          <button class="btn">インスタハッシュタグ上昇率順</button>
                       </a>
                   </div>
               </div>
@@ -37,7 +42,7 @@
           <section class="detail-content" itemprop="text">
             {% for camera in cameras %}
                 <a href="{% url "camera:detail" camera.id %}">
-                    <h2 id="#i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</h2>
+                    <h2 id="i{{ forloop.counter }}">{{ forloop.counter }}位 {{ camera.name }}</h2>
                 </a>
                 <div class="camera-info">
                     <div class="row">
@@ -92,6 +97,37 @@
                 </div>
                 {% include "camera/spec_detail.html" %}
             {% endfor %}
+
+                <div class="ec-ranking">
+                    <h2 id="i11">Amazonや楽天の人気ランキングを見る</h2>
+                    <h3>コンパクトデジタルカメラ</h3>
+                    <a href="https://amzn.to/2CcAr7S" target="_blank">
+                        <button class="btn">Amazonのコンデジ売れ筋ランキング</button>
+                    </a>
+                    <a href="https://hb.afl.rakuten.co.jp/hgc/15ef3d3e.100ef9c6.15ef3d3f.ad3906de/?pc=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F110110%2F&m=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F110110%2F" target="_blank" rel="nofollow noopener noreferrer" style="word-wrap:break-word;"  >
+                        <button class="btn">楽天のコンデジ売れ筋ランキング</button>
+                    </a>
+                    <h3>ミラーレス一眼</h3>
+                    <a href="https://amzn.to/2Cgb2dz" target="_blank">
+                        <button class="btn">Amazonのミラーレス一眼売れ筋ランキング</button>
+                    </a>
+                    <a href="https://hb.afl.rakuten.co.jp/hgc/15ef3d3e.100ef9c6.15ef3d3f.ad3906de/?pc=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F564286%2F&m=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F564286%2F" target="_blank" rel="nofollow noopener noreferrer" style="word-wrap:break-word;"  >
+                        <button class="btn">楽天のミラーレス一眼売れ筋ランキング</button>
+                    </a>
+                    <h3>一眼レフ</h3>
+                    <a href="https://amzn.to/2Fq8cGi" target="_blank">
+                        <button class="btn">Amazonの一眼レフ売れ筋ランキング</button>
+                    </a>
+                    <a href="https://hb.afl.rakuten.co.jp/hgc/15ef3d3e.100ef9c6.15ef3d3f.ad3906de/?pc=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F213289%2F&m=https%3A%2F%2Franking.rakuten.co.jp%2Fdaily%2F213289%2F" target="_blank" rel="nofollow noopener noreferrer" style="word-wrap:break-word;"  >
+                        <button class="btn">楽天の一眼レフ売れ筋ランキング</button>
+                    </a>
+                </div>
+
+                <div class="rank-customize">
+                    <h2 id="i12">ランキングをカスタマイズする</h2>
+                    {% include "camera/search_form.html" %}
+                </div>
+            </div>
           </section>
         </div>
     </div>
