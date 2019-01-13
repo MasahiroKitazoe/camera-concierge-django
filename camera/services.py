@@ -1,14 +1,13 @@
 from .models import Camera
-from ranking.models import Rank
 from camera.models import Review
 
 
 class CameraSearcher:
-    def __init__(self, rank_id=None, sort_type=None):
-        self.rank_id = rank_id
+    def __init__(self, rank=None, sort_type=None):
+        self.rank = rank
         self.sort_type = sort_type
-        if self.rank_id is not None:
-            self.rank_criteria = Rank.objects.get(pk=self.rank_id).map_rank()
+        if self.rank is not None:
+            self.rank_criteria = rank.map_rank()
 
     def filter_cameras_by_ranking(self):
         """
@@ -23,18 +22,18 @@ class CameraSearcher:
         sort_type = self.sort_type + "_count"
         return sorted(results, key=lambda camera: camera[sort_type], reverse=True)
 
-    def add_reviews_to_results(self, cameras):
+    def add_reviews_to_results(self, cameras, review_len=10):
         reviews = Review.map_reviews_by_camera_id()
         for camera in cameras:
-            camera["reviews"] = reviews[camera["id"]][:10]
+            camera["reviews"] = reviews[camera["id"]][:review_len]
         return cameras
 
-    def filter(self, criteria_dict):
+    def filter(self, criteria_dict, review_len=10):
         """
         引数criteria_dictに格納されたcameraの検索条件を元に、
         該当のcameraを抜き出して配列で返す。
         """
-        cameras = Camera.map_cameras()
+        cameras, reviews = Camera.map_cameras()
 
         results = []
 
@@ -87,10 +86,10 @@ class CameraSearcher:
             if match_flag is False:
                 continue
 
-            results.append(camera_specs)
+            # カメラにレビューを紐付ける
+            camera_specs["reviews"] = reviews[camera_specs["id"]][:review_len]
 
-        # カメラにレビューを紐付ける
-        results = self.add_reviews_to_results(results)
+            results.append(camera_specs)
 
         # レビュー数降順でカメラをソート
         return self.sort_filter_results(results)

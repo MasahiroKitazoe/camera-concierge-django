@@ -104,7 +104,7 @@ class Review(models.Model):
     @classmethod
     def map_reviews_by_camera_id(cls):
         mapped_reviews = {}
-        reviews = Review.objects.select_related("camera").all()
+        reviews = Review.objects.all()
         for review in reviews:
             review_dict = {
                 "id": review.id,
@@ -112,8 +112,8 @@ class Review(models.Model):
                 "body": review.body,
                 "url": review.url,
             }
-            mapped_reviews.setdefault(review.camera.id, [])
-            mapped_reviews[review.camera.id].append(review_dict)
+            mapped_reviews.setdefault(review.camera_id, [])
+            mapped_reviews[review.camera_id].append(review_dict)
         return mapped_reviews
 
 
@@ -194,14 +194,6 @@ class Camera(models.Model):
         else:
             return False
 
-    def assign_item(self, item):
-        if type(item) == float and math.isnan(item):
-            return 0
-        else:
-            if type(item) == str:
-                item = item.replace("\u3000", " ")
-            return item
-
     @classmethod
     def import_csv(cls, file_path):
         df = pd.read_csv(file_path, encoding='utf-8')
@@ -266,7 +258,7 @@ class Camera(models.Model):
         ※ 発売日に関しては、str型からdatetime型に整形して、"open_date"として格納している
         :return: カメラのスペック情報が入った辞書を格納した配列
         """
-        cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type")
+        cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type", "hashtag")
         reviews = Review.map_reviews_by_camera_id()
         results = {}
         for camera in cameras:
@@ -326,7 +318,25 @@ class Camera(models.Model):
                 "rakuten_link": camera.rakuten_link,
                 "image_url": camera.image_url,
                 "review_count": len(reviews[camera.id]),
-                "hashtag_count": 100,
-                "hashtag_increase_count": 10
+                "hashtag_count": camera.hashtag.count,
+                "hashtag_increase_count": camera.hashtag.week_increase
             }
-        return results
+        return results, reviews
+
+
+class HashTag(models.Model):
+    camera = models.OneToOneField(Camera, on_delete=models.CASCADE, primary_key=True)
+    count = models.IntegerField("ハッシュタグ数")
+    week_increase = models.IntegerField("週間ハッシュタグ増加数")
+
+    @classmethod
+    def import_csv(cls, file_path):
+        df = pd.read_csv(file_path)
+        for _, row in df.iterrows():
+            hashtag = HashTag()
+
+            hashtag.camera_id = assign_item(row[1])
+            hashtag.hashtag = assign_item(row[3])
+            hashtag.hashtag_increase_week = assign_item(row[4])
+
+            hashtag.save()

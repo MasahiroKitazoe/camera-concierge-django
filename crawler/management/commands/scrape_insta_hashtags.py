@@ -56,7 +56,8 @@ class Command(BaseCommand):
     help = "カメラのインスタハッシュタグ数を取得し、csvに出力する"
 
     def handle(self, *args, **options):
-        result_df = pd.DataFrame(columns=["camera_id", "hashtag_name", "posted_count"])
+        hashtags_before_df = pd.read_csv("crawler/output/posted_count_insta.csv")
+        result_df = pd.DataFrame(columns=["camera_id", "hashtag_name", "hashtag_count", "hashtag_increase"])
 
         cameras = Camera.map_cameras()
         for camera_id, camera in cameras.items():
@@ -65,7 +66,8 @@ class Command(BaseCommand):
             posted_count = self.scrape_hashtag_count(shaped_camera_name)
             posted_count_series["camera_id"] = camera_id
             posted_count_series["hashtag_name"] = shaped_camera_name
-            posted_count_series["posted_count"] = posted_count
+            posted_count_series["hashtag_count"] = posted_count
+            posted_count_series["hashtag_increase"] = int(posted_count) - int(hashtags_before_df.iat[camera_id - 1, 3])
             result_df = result_df.append(posted_count_series, ignore_index=True)
 
         result_df.to_csv("crawler/output/posted_count_insta.csv")
