@@ -17,7 +17,7 @@
                 {% elif sort_type == "hashtag" %}
                     <li>インスタハッシュタグ数: {{ camera.hashtag_count }}</li>
                 {% else %}
-                    <li>インスタハッシュタグ上昇数: {{ camera.hashtag_increase_count }}</li>
+                    <li>インスタハッシュタグ上昇数（週間）: {{ camera.hashtag_increase_count }}</li>
                 {% endif %}
                 <li>参考価格: {{ camera.price }}円</li>
                 <li>種類: {{ camera.camera_type.cam_type }}</li>
