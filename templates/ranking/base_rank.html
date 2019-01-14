@@ -16,28 +16,27 @@
       <meta property="article:published_time" content="">
       <meta property="article:modified_time" content="">
       <meta property="og:locale" content="ja_JP" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
       {% include "common/css_js_tags.html" %}
   </head>
   <body>
 
-    <nav>
-      <div class="nav-wrapper orange">
-        <a href="/" class="brand-logo"><i class="fa fa-home"></i></a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger" style="margin-left: 2px;"><i class="material-icons">menu</i></a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="/ranking">ランキングから探す</a></li>
-          <li><a href="/search">カメラを自分で検索</a></li>
-          <li><a href="#">コンシェルジュに見つけてもらう</a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <ul class="sidenav" id="mobile-demo">
-      <li><a href="/ranking">ランキングから探す</a></li>
-      <li><a href="/search">カメラを検索</a></li>
-      <li><a href="#">コンシェルジュに見つけてもらう</a></li>
-    </ul>
+    <header id="luxbar" class="luxbar-fixed">
+        <input type="checkbox" class="luxbar-checkbox" id="luxbar-checkbox"/>
+        <div class="luxbar-menu luxbar-menu-right luxbar-menu-material-amber" style="background-color: #ff9800;">
+            <ul class="luxbar-navigation">
+                <li class="luxbar-header">
+                    <a href="/" class="luxbar-brand">Camera Concierge</a>
+                    <label class="luxbar-hamburger luxbar-hamburger-doublespin"
+                    id="luxbar-hamburger" for="luxbar-checkbox"> <span></span> </label>
+                </li>
+                <li class="luxbar-item"><a href="/ranking">ランキングから探す</a></li>
+                <li class="luxbar-item"><a href="/search">カメラを自分で検索</a></li>
+    {#                <li class="luxbar-item"><a href="#">コンシェルジュに見つけてもらう</a></li>#}
+            </ul>
+        </div>
+    </header>
 
     {% block content %}
     {% endblock %}
