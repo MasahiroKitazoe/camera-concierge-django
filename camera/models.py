@@ -9,114 +9,6 @@ import math
 from ranking.utils import assign_item
 
 
-class CameraType(models.Model):
-    cam_type = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    @classmethod
-    def import_csv(cls):
-        file_path = "dataset/camera_types.csv"
-
-        df = pd.read_csv(file_path, encoding='utf-8')
-        for _, row in df.iterrows():
-            c_type = CameraType()
-
-            c_type.cam_type = row[1]
-            c_type.save()
-
-
-class Finder(models.Model):
-    finder_type = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def choice_name(self):
-        return self.finder_type
-
-    @classmethod
-    def import_csv(cls):
-        file_path = "dataset/finders.csv"
-
-        df = pd.read_csv(file_path, encoding='utf-8')
-        for _, row in df.iterrows():
-            finder = Finder()
-            finder.finder_type = row[1]
-            finder.save()
-
-
-class Frame(models.Model):
-    frame_type = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    @classmethod
-    def import_csv(cls):
-        file_path = "dataset/frames.csv"
-
-        df = pd.read_csv(file_path, encoding='utf-8')
-        for _, row in df.iterrows():
-            frame = Frame()
-            frame.frame_type = row[1]
-            frame.save()
-
-
-class Maker(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.__dict__)
-
-    def choice_name(self):
-        return self.name
-
-    @classmethod
-    def import_csv(cls):
-        file_path = "dataset/makers.csv"
-
-        df = pd.read_csv(file_path, encoding='utf-8')
-        for _, row in df.iterrows():
-            maker = Maker()
-            maker.name = row[1]
-            maker.save()
-
-
-class Review(models.Model):
-    title = models.TextField()
-    body = models.TextField()
-    url = models.TextField()
-    camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
-
-    @classmethod
-    def import_csv(cls, file_path):
-        df = pd.read_csv(file_path, encoding='utf-8')
-        for _, row in df.iterrows():
-            review = Review()
-            review.title = row[1]
-            review.body = row[2]
-            review.url = row[3]
-            review.camera_id = row[4]
-            review.save()
-
-    @classmethod
-    def map_reviews_by_camera_id(cls):
-        mapped_reviews = {}
-        reviews = Review.objects.all()
-        for review in reviews:
-            review_dict = {
-                "id": review.id,
-                "title": review.title,
-                "body": review.body,
-                "url": review.url,
-            }
-            mapped_reviews.setdefault(review.camera_id, [])
-            mapped_reviews[review.camera_id].append(review_dict)
-        return mapped_reviews
-
-
 class Camera(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
@@ -322,6 +214,114 @@ class Camera(models.Model):
                 "hashtag_increase_count": camera.hashtag.week_increase
             }
         return results, reviews
+
+
+class CameraType(models.Model):
+    cam_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    @classmethod
+    def import_csv(cls):
+        file_path = "dataset/camera_types.csv"
+
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            c_type = CameraType()
+
+            c_type.cam_type = row[1]
+            c_type.save()
+
+
+class Finder(models.Model):
+    finder_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def choice_name(self):
+        return self.finder_type
+
+    @classmethod
+    def import_csv(cls):
+        file_path = "dataset/finders.csv"
+
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            finder = Finder()
+            finder.finder_type = row[1]
+            finder.save()
+
+
+class Frame(models.Model):
+    frame_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    @classmethod
+    def import_csv(cls):
+        file_path = "dataset/frames.csv"
+
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            frame = Frame()
+            frame.frame_type = row[1]
+            frame.save()
+
+
+class Maker(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def choice_name(self):
+        return self.name
+
+    @classmethod
+    def import_csv(cls):
+        file_path = "dataset/makers.csv"
+
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            maker = Maker()
+            maker.name = row[1]
+            maker.save()
+
+
+class Review(models.Model):
+    title = models.TextField()
+    body = models.TextField()
+    url = models.TextField()
+    camera = models.ForeignKey("Camera", on_delete=models.PROTECT)
+
+    @classmethod
+    def import_csv(cls, file_path):
+        df = pd.read_csv(file_path, encoding='utf-8')
+        for _, row in df.iterrows():
+            review = Review()
+            review.title = row[1]
+            review.body = row[2]
+            review.url = row[3]
+            review.camera_id = row[4]
+            review.save()
+
+    @classmethod
+    def map_reviews_by_camera_id(cls):
+        mapped_reviews = {}
+        reviews = Review.objects.all()
+        for review in reviews:
+            review_dict = {
+                "id": review.id,
+                "title": review.title,
+                "body": review.body,
+                "url": review.url,
+            }
+            mapped_reviews.setdefault(review.camera_id, [])
+            mapped_reviews[review.camera_id].append(review_dict)
+        return mapped_reviews
 
 
 class HashTag(models.Model):
