@@ -13,6 +13,34 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='CameraType',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('cam_type', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Finder',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('finder_type', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Frame',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('frame_type', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Maker',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=50)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Camera',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -51,34 +79,6 @@ class Migration(migrations.Migration):
                 ('super_wide', models.BooleanField()),
                 ('open_year', models.IntegerField()),
                 ('open_month', models.IntegerField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='CameraType',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cam_type', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Finder',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('finder_type', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Frame',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('frame_type', models.CharField(max_length=50)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Maker',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
