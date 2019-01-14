@@ -336,7 +336,7 @@ class HashTag(models.Model):
             hashtag = HashTag()
 
             hashtag.camera_id = assign_item(row[1])
-            hashtag.hashtag = assign_item(row[3])
-            hashtag.hashtag_increase_week = assign_item(row[4])
+            hashtag.count = assign_item(row[3])
+            hashtag.week_increase = assign_item(row[4])
 
             hashtag.save()
