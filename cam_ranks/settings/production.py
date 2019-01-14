@@ -9,7 +9,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cam_ranks_production',
-        "DATABASES": DATABASES
+        "DATABASES": DATABASES,
         "HOST": HOST,
         "PASSWORD": DB_PASSWORD,
         "USER": DB_USER,
