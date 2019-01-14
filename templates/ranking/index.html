@@ -6,22 +6,14 @@
   <div class="col s12 m7">
     <h2 class="header"><i class="fas fa-crown"></i> ランキングからカメラを探す <i class="fas fa-crown"></i></h2><br>
     {% for rank in ranks %}
-      <div class="card horizontal">
-        <div class="card-image">
-          <img src="{% static 'ranking/images/tiger.JPG' %}" style="width: 300px; height: auto;">
-        </div>
-        <div class="card-stacked">
-          <div class="card-content">
-            <a href="{% url 'ranking:detail' rank.id %}" class="title-link" style="text-decoration: none; color: inherit;">
-              <h2 class="ranking-title"><b>{{ rank.title }}</b></h2>
-            </a>
-            <p>{{ rank.description }}</p>
-          </div>
-          <div class="card-action">
-            <a href="{% url 'ranking:detail' rank.id %}">このランキングを見る</a>
+        <div class="card">
+          <div class="card-body">
+              <a href="{% url "ranking:detail" rank.id "review" %}" id="ranking-title-link" style="text-decoration: none; color: inherit;">
+                  <h2 class="ranking-title">{{ rank.title }}</h2>
+              </a>
+              <p>{{ rank.description }}</p>
           </div>
         </div>
-      </div>
     {% endfor %}
   </div>
 {% endblock %}

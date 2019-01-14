@@ -34,9 +34,9 @@ class SearchForm(ModelForm):
     max_f_value_wide = forms.ChoiceField(label="ワイド端F値(上限)", required=False, choices=F_VALUE)
     min_f_value_tele = forms.ChoiceField(label="テレ端F値(下限)", required=False, choices=F_VALUE)
     max_f_value_tele = forms.ChoiceField(label="テレ端F値(上限)", required=False, choices=F_VALUE)
-    min_shootin_num_with_finder = \
+    min_shooting_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(下限)", required=False)
-    max_shootin_num_with_finder = \
+    max_shooting_num_with_finder = \
       forms.IntegerField(label="ファインダー使用時の撮影可能枚数(上限)", required=False)
     min_zoom = forms.IntegerField(label="ズーム(下限)", required=False)
     max_zoom = forms.IntegerField(label="ズーム(上限)", required=False)
@@ -72,9 +72,6 @@ class SearchForm(ModelForm):
         "max_iso",
         "min_focus",
         "max_focus",
-        "nearest_shot",
-        "nearest_shot_with_macro_mode",
-        "f_value_wide",
         ]
         labels = {
         "name": "機種名",
@@ -92,10 +89,8 @@ class SearchForm(ModelForm):
         self.fields["bluetooth"].required = False
         self.fields["min_focus"].required = False
         self.fields["max_focus"].required = False
-        self.fields["nearest_shot"].required = False
         self.fields["anti_shake"].required = False
         self.fields["five_axis_anti_shake"].required = False
-        self.fields["nearest_shot_with_macro_mode"].required = False
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-fields'
 
@@ -110,3 +105,36 @@ class SearchForm(ModelForm):
 
     def clean_maker_id(self):
         return int(self.cleaned_data["maker_id"]) if self.cleaned_data["maker_id"] else None
+
+    def clean_wifi(self):
+        return bool(self.cleaned_data["wifi"]) if self.cleaned_data["wifi"] else None
+
+    def clean_four_k(self):
+        return bool(self.cleaned_data["four_k"]) if self.cleaned_data["four_k"] else None
+
+    def clean_touch_panel(self):
+        return bool(self.cleaned_data["touch_panel"]) if self.cleaned_data["touch_panel"] else None
+
+    def clean_move_panel(self):
+        return bool(self.cleaned_data["move_panel"]) if self.cleaned_data["move_panel"] else None
+
+    def clean_bluetooth(self):
+        return bool(self.cleaned_data["bluetooth"]) if self.cleaned_data["bluetooth"] else None
+
+    def clean_selfie(self):
+        return bool(self.cleaned_data["selfie"]) if self.cleaned_data["selfie"] else None
+
+    def clean_waterploof(self):
+        return bool(self.cleaned_data["waterploof"]) if self.cleaned_data["waterploof"] else None
+
+    def clean_gps(self):
+        return bool(self.cleaned_data["gps"]) if self.cleaned_data["gps"] else None
+
+    def clean_anti_shake(self):
+        return bool(self.cleaned_data["anti_shake"]) if self.cleaned_data["anti_shake"] else None
+
+    def clean_five_axis_anti_shake(self):
+        return bool(self.cleaned_data["five_axis_anti_shake"]) if self.cleaned_data["five_axis_anti_shake"] else None
+
+    def clean_super_wide(self):
+        return bool(self.cleaned_data["super_wide"]) if self.cleaned_data["super_wide"] else None

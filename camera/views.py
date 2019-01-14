@@ -19,18 +19,30 @@ def search(request):
         return render(request, 'camera/search.html', {"form": form})
 
     page = request.GET.get("page")
-    # ページ指定の場合、formのパラメータは保存済みセッション変数から受け取る
+    sort_type = request.GET.get("sort_type")
+    # ページ指定&算出基準変更の場合、formのパラメータは保存済みセッション変数から受け取る
     if page:
         form = SearchForm(request.session.get("form_data"))
+        rank_ten_position = int(page) - 1
     else:
-        form = SearchForm(request.GET)
+        if sort_type:
+            form = SearchForm(request.session.get("form_data"))
+        else:
+            form = SearchForm(request.GET)
+        rank_ten_position = None
     form.is_valid()  # エラーは起きない想定
     request.session["form_data"] = form.cleaned_data
 
-    search_results = CameraSearcher.filter(form.cleaned_data)
+    search_results = CameraSearcher(sort_type=sort_type).filter(form.cleaned_data)
     paginator = Paginator(search_results, 10)
     cameras = paginator.get_page(page)
-    return render(request, 'camera/search.html', {"form": form, "cameras": cameras})
+    data = {
+        "form": form,
+        "cameras": cameras,
+        "rank_ten_position": rank_ten_position,
+        "sort_type": sort_type
+    }
+    return render(request, 'camera/search.html', data)
 
 
 @require_http_methods(["GET"])

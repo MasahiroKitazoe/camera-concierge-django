@@ -1,5 +1,4 @@
 __pycache__/
-dataset/
 *.pyc
 venv/*
 db.sqlite3
@@ -7,6 +6,5 @@ db.sqlite3
 .DS_Store
 staticfiles/
 memo.md
-crawler/output/*
 *chromedriver
 *.env

@@ -6,6 +6,8 @@ from django.db import models
 import pandas as pd
 import math
 
+from ranking.utils import assign_item
+
 
 class CameraType(models.Model):
     cam_type = models.CharField(max_length=50)
@@ -100,9 +102,9 @@ class Review(models.Model):
             review.save()
 
     @classmethod
-    def map_review_counts_of_cameras(cls):
-        mapped_counts = {}
-        reviews = Review.objects.select_related("camera").all()
+    def map_reviews_by_camera_id(cls):
+        mapped_reviews = {}
+        reviews = Review.objects.all()
         for review in reviews:
             review_dict = {
                 "id": review.id,
@@ -110,9 +112,9 @@ class Review(models.Model):
                 "body": review.body,
                 "url": review.url,
             }
-            mapped_counts.setdefault(review.camera.id, [])
-            mapped_counts[review.camera.id].append(review_dict)
-        return mapped_counts
+            mapped_reviews.setdefault(review.camera_id, [])
+            mapped_reviews[review.camera_id].append(review_dict)
+        return mapped_reviews
 
 
 class Camera(models.Model):
@@ -192,62 +194,54 @@ class Camera(models.Model):
         else:
             return False
 
-    def assign_item(self, item):
-        if type(item) == float and math.isnan(item):
-            return 0
-        else:
-            if type(item) == str:
-                item = item.replace("\u3000", " ")
-            return item
-
     @classmethod
     def import_csv(cls, file_path):
         df = pd.read_csv(file_path, encoding='utf-8')
         for _, row in df.iterrows():
             camera = Camera()
 
-            camera.name = camera.assign_item(row[1])
-            camera.price = camera.assign_item(row[2])
-            camera.pixel = camera.assign_item(row[3])
-            camera.min_iso = camera.assign_item(row[4])
-            camera.max_iso = camera.assign_item(row[5])
-            camera.continuous_shooting_performance = camera.assign_item(row[6])
-            camera.shutter_speed = camera.assign_item(row[7])
-            camera.monitor_size = camera.assign_item(row[8])
-            camera.monitor_pixel = camera.assign_item(row[9])
-            camera.shooting_num = camera.assign_item(row[10])
-            camera.four_k = camera.assign_item(row[11])
-            camera.wifi = camera.assign_item(row[12])
-            camera.touch_panel = camera.assign_item(row[13])
-            camera.move_panel = camera.assign_item(row[14])
-            camera.weight = camera.assign_item(row[15])
-            camera.width = camera.assign_item(row[16])
-            camera.height = camera.assign_item(row[17])
-            camera.depth = camera.assign_item(row[18])
-            camera.frame_id = camera.assign_item(row[19])
-            camera.maker_id = camera.assign_item(row[20])
-            camera.finder_id = camera.assign_item(row[21])
-            camera.f_value_wide = camera.assign_item(row[22])
-            camera.shooting_num_with_finder = camera.assign_item(row[23])
-            camera.bluetooth = camera.assign_item(row[24])
-            camera.zoom = camera.assign_item(row[25])
-            camera.min_focus = camera.assign_item(row[26])
-            camera.max_focus = camera.assign_item(row[27])
-            camera.selfie = camera.assign_item(row[28])
-            camera.waterproof = camera.assign_item(row[29])
-            camera.gps = camera.assign_item(row[30])
-            camera.nearest_shot = camera.assign_item(row[31])
-            camera.anti_shake = camera.assign_item(row[32])
-            camera.five_axis_anti_shake = camera.assign_item(row[33])
-            camera.nearest_shot_with_macro_mode = camera.assign_item(row[34])
-            camera.f_value_tele = camera.assign_item(row[35])
-            camera.super_wide = camera.assign_item(row[36])
-            camera.open_year = camera.assign_item(row[37])
-            camera.open_month = camera.assign_item(row[38])
-            camera.camera_type_id = camera.assign_item(row[39])
-            camera.amazon_link = camera.assign_item(row[40])
-            camera.rakuten_link = camera.assign_item(row[41])
-            camera.image_url = camera.assign_item(row[42])
+            camera.name = assign_item(row[1])
+            camera.price = assign_item(row[2])
+            camera.pixel = assign_item(row[3])
+            camera.min_iso = assign_item(row[4])
+            camera.max_iso = assign_item(row[5])
+            camera.continuous_shooting_performance = assign_item(row[6])
+            camera.shutter_speed = assign_item(row[7])
+            camera.monitor_size = assign_item(row[8])
+            camera.monitor_pixel = assign_item(row[9])
+            camera.shooting_num = assign_item(row[10])
+            camera.four_k = assign_item(row[11])
+            camera.wifi = assign_item(row[12])
+            camera.touch_panel = assign_item(row[13])
+            camera.move_panel = assign_item(row[14])
+            camera.weight = assign_item(row[15])
+            camera.width = assign_item(row[16])
+            camera.height = assign_item(row[17])
+            camera.depth = assign_item(row[18])
+            camera.frame_id = assign_item(row[19])
+            camera.maker_id = assign_item(row[20])
+            camera.finder_id = assign_item(row[21])
+            camera.f_value_wide = assign_item(row[22])
+            camera.shooting_num_with_finder = assign_item(row[23])
+            camera.bluetooth = assign_item(row[24])
+            camera.zoom = assign_item(row[25])
+            camera.min_focus = assign_item(row[26])
+            camera.max_focus = assign_item(row[27])
+            camera.selfie = assign_item(row[28])
+            camera.waterproof = assign_item(row[29])
+            camera.gps = assign_item(row[30])
+            camera.nearest_shot = assign_item(row[31])
+            camera.anti_shake = assign_item(row[32])
+            camera.five_axis_anti_shake = assign_item(row[33])
+            camera.nearest_shot_with_macro_mode = assign_item(row[34])
+            camera.f_value_tele = assign_item(row[35])
+            camera.super_wide = assign_item(row[36])
+            camera.open_year = assign_item(row[37])
+            camera.open_month = assign_item(row[38])
+            camera.camera_type_id = assign_item(row[39])
+            camera.amazon_link = assign_item(row[40])
+            camera.rakuten_link = assign_item(row[41])
+            camera.image_url = assign_item(row[42])
 
             camera.save()
 
@@ -264,8 +258,8 @@ class Camera(models.Model):
         ※ 発売日に関しては、str型からdatetime型に整形して、"open_date"として格納している
         :return: カメラのスペック情報が入った辞書を格納した配列
         """
-        cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type")
-        review_counts = Review.map_review_counts_of_cameras()
+        cameras = Camera.objects.all().select_related("maker", "frame", "finder", "camera_type", "hashtag")
+        reviews = Review.map_reviews_by_camera_id()
         results = {}
         for camera in cameras:
             results[camera.id] = {
@@ -289,8 +283,17 @@ class Camera(models.Model):
                 "height": camera.height,
                 "depth": camera.depth,
                 "frame_id": camera.frame.id,
+                "frame": {
+                    "frame_type": camera.frame.frame_type
+                },
                 "maker_id": camera.maker.id,
+                "maker": {
+                    "name": camera.maker.name
+                },
                 "finder_id": camera.finder.id,
+                "finder": {
+                    "finder_type": camera.finder.finder_type
+                },
                 "f_value_wide": camera.f_value_wide,
                 "shooting_num_with_finder": camera.shooting_num_with_finder,
                 "bluetooth": camera.bluetooth_mounted(),
@@ -308,9 +311,32 @@ class Camera(models.Model):
                 "super_wide": camera.super_wide,
                 "open_date": camera.open_date(),
                 "camera_type_id": camera.camera_type.id,
+                "camera_type": {
+                    "cam_type": camera.camera_type.cam_type
+                },
                 "amazon_link": camera.amazon_link,
                 "rakuten_link": camera.rakuten_link,
                 "image_url": camera.image_url,
-                "review_count": len(review_counts[camera.id])
+                "review_count": len(reviews[camera.id]),
+                "hashtag_count": camera.hashtag.count,
+                "hashtag_increase_count": camera.hashtag.week_increase
             }
-        return results
+        return results, reviews
+
+
+class HashTag(models.Model):
+    camera = models.OneToOneField(Camera, on_delete=models.CASCADE, primary_key=True)
+    count = models.IntegerField("ハッシュタグ数")
+    week_increase = models.IntegerField("週間ハッシュタグ増加数")
+
+    @classmethod
+    def import_csv(cls, file_path):
+        df = pd.read_csv(file_path)
+        for _, row in df.iterrows():
+            hashtag = HashTag()
+
+            hashtag.camera_id = assign_item(row[1])
+            hashtag.hashtag = assign_item(row[3])
+            hashtag.hashtag_increase_week = assign_item(row[4])
+
+            hashtag.save()

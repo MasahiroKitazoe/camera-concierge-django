@@ -1,69 +1,39 @@
 from .models import Camera
-from ranking.models import Rank
+from camera.models import Review
 
 
 class CameraSearcher:
-    def __init__(self, rank_id=None):
-        self.rank_id = rank_id
+    def __init__(self, rank=None, sort_type=None):
+        self.rank = rank
+        self.sort_type = sort_type
+        if self.rank is not None:
+            self.rank_criteria = rank.map_rank()
 
     def filter_cameras_by_ranking(self):
         """
         引数rank_idで与えられたidのrankが指定する条件に合った
         cameraを抜き出して辞書型のデータをを要素とする配列にして返す
         """
-        cameras = Camera.map_cameras()
-        ranks = Rank.map_ranks()
+        return self.filter(self.rank_criteria)
 
-        rank = ranks[self.rank_id]
+    def sort_filter_results(self, results):
+        if self.sort_type is None:
+            return sorted(results, key=lambda camera: camera["review_count"], reverse=True)
+        sort_type = self.sort_type + "_count"
+        return sorted(results, key=lambda camera: camera[sort_type], reverse=True)
 
-        results = []
+    def add_reviews_to_results(self, cameras, review_len=10):
+        reviews = Review.map_reviews_by_camera_id()
+        for camera in cameras:
+            camera["reviews"] = reviews[camera["id"]][:review_len]
+        return cameras
 
-        for cam_id, camera_specs in cameras.items():
-            match_flag = True  # 検索結果を表すフラグ
-
-            # スペック条件を一つずつフィルタしていく
-            for spec, val in camera_specs.items():
-                # スペック以外の情報の時はスキップ
-                if spec in ["name", "target_keyword"]:
-                    continue
-
-                if match_flag is False:
-                    break
-
-                # min, maxがないタイプの要素（four_kとか）
-                if not isinstance(val, dict):
-                    if not val == rank[spec]:
-                        match_flag = False
-                        continue
-
-                # minだけ、maxだけがあるタイプ(min_isoとか)
-                if "min" in spec and rank[spec] >= val:
-                    match_flag = False
-                    continue
-                if "max" in spec and rank[spec] <= val:
-                    match_flag = False
-                    continue
-
-                # min&maxがあるタイプの要素(priceとか)
-                if not rank[spec]["min"] <= val <= rank[spec]["max"]:
-                    match_flag = False
-
-            # マッチしない条件があったら、次の機種のcamera_specsに回る
-            if match_flag is False:
-                continue
-
-            # match_flagがTrueのままだったら、resultsに加える
-            results.append(camera_specs)
-
-        return results
-
-    @classmethod
-    def filter(cls, criteria_dict):
+    def filter(self, criteria_dict, review_len=10):
         """
         引数criteria_dictに格納されたcameraの検索条件を元に、
         該当のcameraを抜き出して配列で返す。
         """
-        cameras = Camera.map_cameras()
+        cameras, reviews = Camera.map_cameras()
 
         results = []
 
@@ -116,8 +86,10 @@ class CameraSearcher:
             if match_flag is False:
                 continue
 
+            # カメラにレビューを紐付ける
+            camera_specs["reviews"] = reviews[camera_specs["id"]][:review_len]
+
             results.append(camera_specs)
 
         # レビュー数降順でカメラをソート
-        results = sorted(results, key=lambda camera: camera["review_count"], reverse=True)
-        return results
+        return self.sort_filter_results(results)

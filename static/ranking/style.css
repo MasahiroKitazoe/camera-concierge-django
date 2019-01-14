@@ -3,19 +3,22 @@
   font-size: 3vw
 }
 
-.card .horizontal{
+.card{
   max-height: 500px;
 }
 
-.card-image img{
-  width: 300px;
-  height: auto;
+.card-body{
+  padding: 0 1.25rem;
 }
 
-.card-stacked .card-content .ranking-title{
-  font-size: 2vw;
+.ranking-title:hover {
+  opacity: 0.5;
+  text-decoration: underline;
 }
 
-.title-link{
-  text-decoration: none;
+.ranking-title{
+  font-size: 3vw;
+  margin-top: 0.5rem;
+  color: #609;
 }
+
