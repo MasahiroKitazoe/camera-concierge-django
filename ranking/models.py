@@ -202,8 +202,8 @@ class Rank(models.Model):
             rank.min_f_value_wide = assign_item(row[54])
             rank.max_f_value_wide = assign_item(row[55])
             rank.super_wide = assign_item(row[56])
-            rank.min_open_date = assign_item(row[57], "min_open_date")
-            rank.max_open_date = assign_item(row[58], "max_open_date")
+            rank.min_open_date = assign_item(row[57])
+            rank.max_open_date = assign_item(row[58])
             rank.camera_type_id = assign_item(row[59])
             rank.target_keyword = assign_item(row[60])
             rank.created_at = "2019-1-15"

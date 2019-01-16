@@ -58,6 +58,18 @@ class CameraSearcher:
                         break
                     continue  # 一致していたら、次の検索条件へ
 
+                # min_focus, max_focus
+                if "iso" in spec_name and criteria_dict.get(spec_name, None) is not None:
+                    if criteria_dict.get(spec_name) == 0:
+                        continue
+                    if spec_name == "min_iso" and criteria_dict[spec_name] > spec_val:
+                        match_flag = False
+                        break
+                    if spec_name == "max_iso" and criteria_dict[spec_name] < spec_val:
+                        match_flag = False
+                        break
+                    continue  # 一致していたら、次の検索条件へ
+
                 # min, maxで絞る条件でない場合（cameraのbooleanの属性値を想定）
                 criteria_val = criteria_dict.get(spec_name, None)
                 if criteria_val is not None and len(str(criteria_val)) != 0:

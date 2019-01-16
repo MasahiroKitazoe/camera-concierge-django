@@ -1,5 +1,7 @@
 from .base import *
 
+DEBUG = False
+
 DATABASES = env("DATABASES")
 HOST = env("HOST")
 DB_PASSWORD = env("DB_PASSWORD")
@@ -20,5 +22,3 @@ DATABASES = {
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=400)
 DATABASES['default'].update(db_from_env)
-
-DEBUG = True
