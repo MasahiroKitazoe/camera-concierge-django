@@ -127,6 +127,7 @@ class Camera(models.Model):
     amazon_link = models.TextField()
     rakuten_link = models.TextField()
     image_url = models.TextField()
+    review_count = models.IntegerField()
 
     def open_date(self):
         if not self.open_year or not self.open_month:

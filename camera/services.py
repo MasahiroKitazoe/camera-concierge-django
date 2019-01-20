@@ -1,3 +1,5 @@
+import pandas as pd
+
 from .models import Camera
 from camera.models import Review
 
@@ -105,3 +107,64 @@ class CameraSearcher:
 
         # レビュー数降順でカメラをソート
         return self.sort_filter_results(results)
+
+
+class CameraManager:
+    def __init__(self, camera_id):
+        self.camera_id = camera_id
+
+    @classmethod
+    def update_review_counts(cls, file_path):
+        """
+        最新のレビュー数をCameraモデルに保存する
+        :param file_path: 最新のreviewが格納されているファイルのpath
+        """
+        review_df = pd.read_csv(file_path)
+
+        camera_id = 1
+        review_count = 0
+        for _, row in review_df.iterrows():
+            if camera_id == row["camera_id"]:
+                review_count += 1
+                continue
+
+            camera = Camera.objects.get(pk=camera_id)
+            camera.review_count = review_count
+            camera.save()
+
+            review_count = 0
+            camera_id = row["camera_id"]
+
+
+class ReviewManager:
+    def __init__(self, review_id):
+        self.review_id = review_id
+
+    @classmethod
+    def save_selected_reviews(cls, file_path):
+        """
+        idが上位の25レコード分のレビューだけをDBに保存する
+        DBを無料枠内で使い続けるために数を絞る
+        """
+        review_df = pd.read_csv(file_path)
+
+        review_count = 1
+        camera_id = 1
+        for i, row in review_df.iterrows():
+            if review_count > 25:
+                if camera_id == row["camera_id"]:
+                    continue
+                review_count = 1
+                camera_id = row["camera_id"]
+
+            try:
+                review = Review.objects.get(pk=i+1)
+            except Review.DoesNotExist:
+                review = Review()
+                review.id = i + 1
+            review.title = row["title"]
+            review.body = row["body"]
+            review.url = row["url"]
+            review.camera_id = row["camera_id"]
+            review.save()
+            review_count += 1
