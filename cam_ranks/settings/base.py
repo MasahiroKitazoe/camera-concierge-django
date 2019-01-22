@@ -30,16 +30,19 @@ ALLOWED_HOSTS = ["camera-concierge-django.herokuapp.com",
 # Application definition
 
 INSTALLED_APPS = [
-    'ranking',
-    'camera',
-    'crawler',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'debug_toolbar',
+    "ranking",
+    "camera",
+    "crawler",
+    "cam_ranks",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "debug_toolbar",
+    "django.contrib.sites",
+    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
@@ -135,3 +138,5 @@ AMAZON_EMAIL = env("AMAZON_EMAIL")
 AMAZON_PASSWORD = env("AMAZON_PASSWORD")
 RAKUTEN_EMAIL = env("RAKUTEN_EMAIL")
 RAKUTEN_PASSWORD = env("RAKUTEN_PASSWORD")
+
+SITE_ID = 1

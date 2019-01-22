@@ -2,6 +2,7 @@
 
 from dateutil.parser import *
 from django.db import models
+from django.utils import timezone
 
 import pandas as pd
 import math
@@ -128,6 +129,8 @@ class Camera(models.Model):
     rakuten_link = models.TextField()
     image_url = models.TextField()
     review_count = models.IntegerField()
+    created_at = models.DateField(default=timezone.now)
+    updated_at = models.DateField(default=timezone.now)
 
     def open_date(self):
         if not self.open_year or not self.open_month:
