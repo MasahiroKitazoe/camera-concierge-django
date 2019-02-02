@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
 
+from cam_ranks.settings.base import CHROMEDRIVER_PATH
 from camera.models import Camera
 
 
