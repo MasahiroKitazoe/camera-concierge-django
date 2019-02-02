@@ -1,5 +1,6 @@
 import pandas as pd
 from bs4 import BeautifulSoup
+from options import Options
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -78,7 +79,11 @@ class HashTagScraper:
         :param camera_name: shape_camera_nameメソッドで整形された機種名を想定
         :return: ハッシュタグ投稿数
         """
-        driver = webdriver.Chrome("crawler/management/commands/chromedriver")
+        chrome_options = Options()
+        chrome_options.binary_location = GOOGLE_CHROME_BIN
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         driver.get('https://www.instagram.com/explore/tags/' + camera_name + '/?hl=ja')
 
         # 読み込み待ち
