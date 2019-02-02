@@ -7,7 +7,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import TimeoutException
 
-from cam_ranks.settings.base import CHROMEDRIVER_PATH
+from cam_ranks.settings.base import (
+    CHROMEDRIVER_PATH,
+    GOOGLE_CHROME_BIN
+)
 from camera.models import Camera
 
 
@@ -81,8 +84,10 @@ class HashTagScraper:
         :return: ハッシュタグ投稿数
         """
         chrome_options = Options()
+        chrome_options.binary_location =
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--no-sandbox')
+        chrome_options.headless = True
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
         driver.get('https://www.instagram.com/explore/tags/' + camera_name + '/?hl=ja')
 
