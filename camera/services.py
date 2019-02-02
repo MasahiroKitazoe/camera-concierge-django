@@ -35,7 +35,8 @@ class CameraSearcher:
         引数criteria_dictに格納されたcameraの検索条件を元に、
         該当のcameraを抜き出して配列で返す。
         """
-        cameras, reviews = Camera.map_cameras()
+        cameras = Camera.map_cameras()
+        reviews = Review.map_reviews_by_camera_id()
 
         results = []
 

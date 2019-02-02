@@ -292,7 +292,7 @@ class Camera(models.Model):
                 "hashtag_count": camera.hashtag.count,
                 "hashtag_increase_count": camera.hashtag.week_increase
             }
-        return results, reviews
+        return results
 
 
 class Review(models.Model):
