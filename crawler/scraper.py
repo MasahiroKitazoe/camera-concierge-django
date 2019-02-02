@@ -80,7 +80,6 @@ class HashTagScraper:
         :return: ハッシュタグ投稿数
         """
         chrome_options = Options()
-        chrome_options.binary_location = GOOGLE_CHROME_BIN
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--no-sandbox')
         driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
